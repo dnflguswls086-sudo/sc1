@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f7fbff" />
 <title>경기초 5학년 과학실험실 | 이슬·안개·구름 알아보기</title>
-<!-- v7: 안개 직접 관찰 오류 수정 + 단계별 여유 시간 추가 -->
+<!-- v8: 물 붓기 방향 / 캔 배치 / 안개 시각 효과 개선 -->
 <style>
   :root{
     --ink:#16324a; --muted:#62798c; --line:#dbe7ef; --panel:#ffffff;
@@ -56,7 +56,7 @@
   .fog-lab{background:linear-gradient(180deg,#eef9ff 0%,#f9fdff 58%,#f4f0e8 58%)}
   .jar{position:absolute;left:50%;top:86px;transform:translateX(-50%);width:205px;height:290px;border:4px solid rgba(109,145,165,.5);border-top-width:8px;border-radius:32px 32px 45px 45px;background:linear-gradient(90deg,rgba(255,255,255,.28),rgba(186,223,240,.13),rgba(255,255,255,.38));box-shadow:inset 0 0 20px rgba(84,150,183,.1),0 18px 25px rgba(47,69,81,.12);overflow:hidden}
   .water{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(rgba(95,189,225,.45),rgba(51,143,191,.62));transition:.7s}.water.on{height:70px}
-  .fog{position:absolute;left:10px;right:10px;top:24px;bottom:72px;opacity:0;filter:blur(.3px);transition:1.2s;background:radial-gradient(circle at 20% 35%,rgba(255,255,255,.95) 0 7%,transparent 8%),radial-gradient(circle at 55% 22%,rgba(255,255,255,.93) 0 9%,transparent 10%),radial-gradient(circle at 75% 52%,rgba(255,255,255,.9) 0 12%,transparent 13%),radial-gradient(circle at 35% 68%,rgba(255,255,255,.9) 0 13%,transparent 14%),radial-gradient(circle at 55% 50%,rgba(240,250,255,.86) 0 20%,transparent 22%)}.fog.on{opacity:.92;animation:pulsefog 3s ease-in-out infinite}@keyframes pulsefog{50%{transform:scale(1.03);opacity:.75}}
+   .fog{--fog-level:0;position:absolute;left:5px;right:5px;top:18px;bottom:68px;opacity:var(--fog-level);filter:blur(2.2px);transition:opacity .45s ease,filter .45s ease;background:radial-gradient(ellipse at 22% 30%,rgba(255,255,255,.99) 0 22%,rgba(246,251,253,.94) 34%,transparent 58%),radial-gradient(ellipse at 72% 35%,rgba(255,255,255,.99) 0 25%,rgba(240,248,251,.92) 40%,transparent 62%),radial-gradient(ellipse at 45% 68%,rgba(250,253,254,.99) 0 30%,rgba(229,240,245,.91) 48%,transparent 72%),linear-gradient(180deg,rgba(232,243,248,.90),rgba(245,250,252,.94));box-shadow:inset 0 0 70px 18px rgba(255,255,255,.97);z-index:5;pointer-events:none}.fog.on{--fog-level:.96;animation:pulsefog 2.6s ease-in-out infinite}@keyframes pulsefog{50%{transform:scale(1.025);filter:blur(2.8px)}}
   .smoke{position:absolute;width:7px;height:7px;border-radius:50%;background:rgba(105,112,120,.46);opacity:0;animation:smokeUp 2.7s linear infinite}@keyframes smokeUp{0%{transform:translateY(90px) scale(.5);opacity:0}25%{opacity:.6}100%{transform:translateY(-85px) scale(2.2);opacity:0}}
   .icebag{position:absolute;left:50%;top:42px;transform:translateX(-50%) translateY(-35px);width:245px;height:70px;border-radius:44% 48% 38% 46%;background:rgba(220,244,255,.84);border:3px solid rgba(113,175,204,.45);box-shadow:inset 0 -8px 18px rgba(91,160,195,.15);opacity:0;transition:.55s;z-index:3}.icebag.on{opacity:1;transform:translateX(-50%) translateY(0)}.ice{position:absolute;width:34px;height:24px;border-radius:8px;background:#d7f1ff;border:1px solid #a5d8ef;transform:rotate(var(--r))}
   .incense{position:absolute;left:calc(50% + 135px);top:215px;width:7px;height:115px;background:#7f5e46;border-radius:8px;transform:rotate(12deg);transform-origin:bottom;opacity:0;transition:.3s}.incense.on{opacity:1}.incense:before{content:"";position:absolute;top:-7px;left:-2px;width:11px;height:11px;border-radius:50%;background:#e76d3b;box-shadow:0 0 10px #f1a157}
@@ -113,24 +113,25 @@
 
   /* Fog v2 */
   .fog-lab{background:linear-gradient(180deg,#dff2ff 0%,#f9fdff 60%,#f0ece5 60%,#e9e1d7 100%)}
-  .fog-lab .jar{z-index:3;overflow:hidden;background:linear-gradient(90deg,rgba(255,255,255,.42),rgba(180,220,239,.08) 45%,rgba(255,255,255,.32));backdrop-filter:blur(.2px)}
+  .fog-lab .jar{z-index:3;overflow:hidden;background:linear-gradient(90deg,rgba(207,235,247,.34),rgba(118,175,202,.13) 45%,rgba(218,240,249,.3));backdrop-filter:blur(.2px);transition:box-shadow .45s,background .45s}.fog-lab .jar.fogging{background:linear-gradient(90deg,rgba(190,222,236,.48),rgba(111,163,190,.22) 45%,rgba(202,231,242,.45));box-shadow:inset 0 0 72px rgba(238,250,255,.92),0 18px 25px rgba(47,69,81,.14)}
   .jar:after{content:"";position:absolute;left:14px;top:18px;width:18px;height:200px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,0));opacity:.6;pointer-events:none}
   .water.on:before{content:"";position:absolute;left:-15%;right:-15%;top:-7px;height:15px;border-radius:50%;border-top:3px solid rgba(255,255,255,.62);animation:waterWave 1.6s ease-in-out infinite}
   @keyframes waterWave{50%{transform:translateX(8px) scaleX(.92)}}
-  .pour-cup{position:absolute;left:calc(50% - 210px);top:110px;width:88px;height:80px;border-radius:10px 10px 24px 24px;background:linear-gradient(90deg,#d4edf8,#f7fdff,#bcdceb);border:2px solid #8fbfd4;transform:rotate(0);opacity:.88;z-index:5;transition:.4s}
-  .pour-cup:before{content:"";position:absolute;right:-27px;top:12px;width:34px;height:20px;border:6px solid #a7d0e2;border-left:0;border-radius:0 25px 25px 0}
-  .pour-cup.pour{animation:cupPour 1.6s ease}
-  @keyframes cupPour{0%,100%{transform:rotate(0)}35%,70%{transform:translate(65px,18px) rotate(58deg)}}
-  .water-stream{position:absolute;left:calc(50% - 83px);top:168px;width:8px;height:0;border-radius:999px;background:linear-gradient(#bfeaff,#66b9df);z-index:4;opacity:0;transform:rotate(-12deg);transform-origin:top;transition:.2s}
-  .water-stream.on{animation:streamPour 1.15s .4s ease both}
-  @keyframes streamPour{0%{height:0;opacity:0}20%,75%{height:130px;opacity:.75}100%{height:0;opacity:0}}
+  .pour-cup{position:absolute;left:calc(50% - 210px);top:110px;width:92px;height:78px;border-radius:9px 9px 24px 24px;background:linear-gradient(90deg,rgba(207,237,249,.92),rgba(249,254,255,.96),rgba(185,221,237,.92));border:3px solid #8fbfd4;transform:rotate(0);transform-origin:86% 82%;opacity:.94;z-index:8;transition:.35s;overflow:visible}
+  .pour-cup:before{content:"";position:absolute;right:-10px;top:-5px;width:28px;height:13px;border-top:4px solid #8fbfd4;border-right:4px solid #8fbfd4;border-radius:0 14px 0 0;transform:skewX(18deg);background:rgba(229,247,254,.72)}
+  .pour-cup:after{content:"";position:absolute;left:7px;right:7px;bottom:7px;height:39px;border-radius:4px 4px 17px 17px;background:linear-gradient(180deg,rgba(116,204,238,.42),rgba(67,164,211,.62));box-shadow:inset 0 4px 5px rgba(255,255,255,.35);pointer-events:none}
+  .pour-cup.pour{animation:cupPour 1.55s ease}
+  @keyframes cupPour{0%,100%{transform:rotate(0)}30%,74%{transform:rotate(48deg)}}
+  .water-stream{position:absolute;width:9px;height:0;border-radius:999px;background:linear-gradient(180deg,#d8f4ff 0%,#72c9ed 42%,#4fa8d3 100%);z-index:7;opacity:0;transform:rotate(7deg);transform-origin:top;filter:drop-shadow(0 2px 2px rgba(55,151,198,.18));transition:.2s;pointer-events:none}
+  .water-stream.on{animation:streamPour 1.05s .35s ease both}
+  @keyframes streamPour{0%{height:0;opacity:0}18%,78%{height:104px;opacity:.94}100%{height:0;opacity:0}}
   .incense{z-index:7;transform:rotate(12deg);transition:.3s}
   .incense.dip{animation:incenseDip 2s ease}
   @keyframes incenseDip{0%,100%{transform:rotate(12deg)}35%,70%{transform:translate(-145px,-30px) rotate(-18deg)}}
   .warm-vapor{position:absolute;width:12px;height:12px;border-radius:50%;background:rgba(201,238,251,.56);filter:blur(.5px);animation:warmRise 3.2s ease-in infinite;z-index:2}
   @keyframes warmRise{0%{transform:translateY(0) scale(.6);opacity:0}25%{opacity:.7}100%{transform:translateY(-120px) scale(1.7);opacity:0}}
-  .fog-speck{position:absolute;border-radius:50%;background:rgba(252,254,255,.9);box-shadow:0 0 7px rgba(255,255,255,.85);z-index:6;opacity:0;will-change:transform,opacity}
-  .fog.on{background:radial-gradient(circle at 50% 55%,rgba(244,252,255,.64),transparent 62%);filter:blur(1.5px)}
+  .fog-speck{position:absolute;border-radius:50%;background:rgba(255,255,255,.98);box-shadow:0 0 10px rgba(255,255,255,.98),0 0 3px rgba(134,200,230,.55);z-index:6;opacity:0;will-change:transform,opacity}
+  .fog.on{background:radial-gradient(ellipse at 25% 32%,rgba(255,255,255,.99) 0 28%,rgba(242,248,250,.96) 42%,transparent 68%),radial-gradient(ellipse at 73% 52%,rgba(255,255,255,.99) 0 31%,rgba(232,241,245,.94) 47%,transparent 73%),linear-gradient(180deg,rgba(227,239,244,.95),rgba(248,251,252,.97));box-shadow:inset 0 0 82px 24px rgba(255,255,255,.99)}
   .cool-zone{position:absolute;left:50%;top:66px;transform:translateX(-50%);width:240px;height:140px;background:linear-gradient(180deg,rgba(122,205,241,.22),transparent);border-radius:50%;opacity:0;transition:.7s;filter:blur(8px);z-index:2}
   .cool-zone.on{opacity:1;animation:coolPulse 2.3s ease-in-out infinite}
   @keyframes coolPulse{50%{transform:translateX(-50%) scale(1.08);opacity:.55}}
@@ -197,17 +198,17 @@
   .drop-zone{position:absolute;border:3px dashed rgba(72,153,197,.55);background:rgba(226,246,255,.46);border-radius:24px;display:grid;place-items:center;text-align:center;color:#4680a1;font-size:11px;font-weight:1000;z-index:1;transition:.2s;pointer-events:none}
   .drop-zone.hot{background:rgba(211,244,233,.78);border-color:#54b78f;transform:scale(1.035)}
   .drop-zone.done{opacity:.14}
-  .can-zone{left:50%;top:102px;transform:translateX(-50%);width:185px;height:270px;border-radius:30px}
+  .can-zone{left:50%;top:172px;transform:translateX(-50%);width:185px;height:255px;border-radius:30px}
   .dew-vapor-label{left:18px;top:83px}
-  .dew-lab .can.drag-item{left:42px;top:225px;transform:none;width:118px;height:175px}
+  .dew-lab .can.drag-item{left:42px;top:292px;transform:none;width:118px;height:175px}
   .dew-lab .can.drag-item:after{bottom:-34px}
   .dew-lab .can.drag-item.placed{width:155px;height:230px}
-  .dew-lab .towel.drag-item{display:flex;align-items:center;justify-content:center;opacity:1;left:auto;right:32px;top:250px;width:150px;height:74px;transform:rotate(-7deg);font-size:12px;font-weight:900;color:#785f2b}
+  .dew-lab .towel.drag-item{display:flex;align-items:center;justify-content:center;opacity:1;left:auto;right:32px;top:330px;width:150px;height:74px;transform:rotate(-7deg);font-size:12px;font-weight:900;color:#785f2b}
   .dew-lab .towel.drag-item.dragging{transform:none}
   .magnifier{position:absolute;width:86px;height:86px;border:11px solid #497995;border-radius:50%;background:rgba(223,246,255,.28);box-shadow:inset 0 0 0 4px rgba(255,255,255,.6),0 8px 18px rgba(43,91,118,.16)}
   .magnifier:after{content:"";position:absolute;width:70px;height:14px;background:#497995;border-radius:999px;right:-58px;bottom:-27px;transform:rotate(47deg);transform-origin:left center}
   .magnifier i{position:absolute;inset:9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.75),rgba(127,205,238,.15));pointer-events:none}
-  #dewMagnifier{left:43px;top:105px}
+  #dewMagnifier{left:43px;top:145px}
   .observe-meter,.wipe-meter{position:absolute;left:18px;bottom:18px;width:200px;background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:14px;padding:8px 10px;z-index:18;opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none}
   .observe-meter.on,.wipe-meter.on{opacity:1;transform:none}
   .observe-meter span,.wipe-meter span{display:block;font-size:10px;font-weight:1000;color:#527386;margin-bottom:5px}
@@ -233,8 +234,8 @@
 
   @media(max-width:760px){
     .direct-lab{min-height:560px}
-    .dew-lab .can.drag-item{left:20px;top:300px;width:95px;height:142px}.dew-lab .can.drag-item.placed{width:130px;height:195px}
-    .dew-lab .towel.drag-item{right:18px;top:330px;width:118px;height:62px}.can-zone{top:125px;width:155px;height:230px}
+    .dew-lab .can.drag-item{left:20px;top:365px;width:95px;height:142px}.dew-lab .can.drag-item.placed{width:130px;height:195px}
+    .dew-lab .towel.drag-item{right:18px;top:390px;width:118px;height:62px}.can-zone{top:200px;width:155px;height:225px}
     #dewMagnifier{left:18px;top:110px;width:72px;height:72px}.magnifier:after{width:55px;right:-46px;bottom:-23px}
     .dew-vapor-label{top:76px;left:10px;max-width:150px}.dew-zoom{right:8px;bottom:70px}
     .observe-meter,.wipe-meter{width:155px}.wipe-meter{right:10px}.observe-meter{left:10px}
@@ -423,6 +424,30 @@
     bag.style.left=left+'px';bag.style.top=top+'px';bag.style.right='auto';bag.style.bottom='auto';bag.style.transform='none';
   }
 
+  function placeCanOnBench(){
+    const zone=$('#canZone');
+    can.classList.add('placed');
+    requestAnimationFrame(()=>snapCenter(can,zone,12));
+  }
+  function prepareWaterPour(){
+    const lab=$('#fogLab'),jar=$('#jar'),stream=$('#waterStream');
+    const lr=lab.getBoundingClientRect(),jr=jar.getBoundingClientRect();
+    // 컵은 병의 왼쪽 위에 두고 오른쪽 주둥이가 병 입구를 향하게 한다.
+    const left=jr.left-lr.left-74;
+    const top=jr.top-lr.top-62;
+    cup.style.left=left+'px';cup.style.top=top+'px';cup.style.right='auto';cup.style.bottom='auto';cup.style.transform='none';
+    // 물줄기는 기울어진 컵의 오른쪽 주둥이에서 병 안쪽으로 떨어지도록 배치한다.
+    stream.style.left=(jr.left-lr.left+34)+'px';
+    stream.style.top=(jr.top-lr.top-13)+'px';
+  }
+  function setFogVisual(level){
+    const f=$('#fog'),j=$('#jar');
+    const v=clamp(level,0,1);
+    f.style.setProperty('--fog-level',String(v*.97));
+    f.classList.toggle('on',v>.18);
+    j.classList.toggle('fogging',v>.2);
+  }
+
   function makeDraggable(el,lab,hooks={}){
     let dragging=false,dx=0,dy=0;
     const start=(e)=>{if(el.classList.contains('locked'))return;e.preventDefault();dragging=true;el.classList.add('dragging');el.setPointerCapture?.(e.pointerId);const er=el.getBoundingClientRect(),lr=lab.getBoundingClientRect();el.style.left=(er.left-lr.left)+'px';el.style.top=(er.top-lr.top)+'px';el.style.right='auto';el.style.bottom='auto';el.style.transform='none';dx=e.clientX-er.left;dy=e.clientY-er.top;hooks.onStart?.(e)};
@@ -458,8 +483,8 @@
     setTimeout(()=>{dewStep=3;dewBusy=false;resetToolPosition(dewMag);$('#dewQuestion').classList.remove('hidden');$('#dewNotice').innerHTML='💧 캔 표면에 작은 물방울이 생겼어! 파란 입자로 표현한 <b>공기 중 수증기</b>가 차가운 표면에서 물방울로 변한 거야.';syncDew();save()},STEP_PAUSE);
   }
   function startDewWatch(){clearInterval(dewWatch);dewWatch=setInterval(()=>{if(dewStep!==2)return;if(overlap(dewMag,can,18)){dewObserveElapsed+=200;if(Math.floor(dewObserveElapsed/1000)!==Math.floor((dewObserveElapsed-200)/1000))launchCondensationWave(5);if(dewObserveElapsed>=3500)$('#dewZoom').classList.add('on');updateDewMeter();if(dewObserveElapsed>=8000)finishDewObservation()}},200)}
-  function syncDew(){updateSteps('#dewSteps',Math.min(dewStep,3));$('#toFog').disabled=!dewAnswered;can.classList.toggle('placed',dewStep>=1);$('#dewLab').classList.toggle('chilled',dewStep>=1);$('#canZone').classList.toggle('done',dewStep>=1);setStepVisible($('#canZone'),dewStep===0);setStepVisible(can,true);setStepVisible(towel,dewStep===1);setStepVisible(dewMag,dewStep===2);setReady(can,dewStep===0&&!dewBusy);setReady(towel,dewStep===1&&!dewBusy);setReady(dewMag,dewStep===2&&!dewBusy);if(dewStep>=1&&!can.classList.contains('dragging'))snapCenter(can,$('#canZone'));if(dewStep>=3){$('#dewQuestion').classList.remove('hidden');$('#dewZoom').classList.add('on');if(!can.querySelector('.drop'))for(let i=0;i<28;i++)makeDropAt(8+Math.random()*82,10+Math.random()*78)}updateWipeMeter();updateDewMeter()}
-  makeDraggable(can,dewLab,{onMove:()=>{if(!dewBusy)$('#canZone').classList.toggle('hot',overlap(can,$('#canZone'),15))},onEnd:()=>{const ok=overlap(can,$('#canZone'),15);$('#canZone').classList.remove('hot');if(ok&&dewStep===0&&!dewBusy){dewBusy=true;snapCenter(can,$('#canZone'));can.classList.add('placed');setReady(can,false);$('#dewNotice').innerHTML='✅ 차가운 캔을 준비했어! <b>차가운 캔의 표면</b>을 잠깐 살펴보자.';toast('차가운 캔 준비 완료!');setTimeout(()=>{dewStep=1;dewBusy=false;$('#dewNotice').innerHTML='② 이제 오른쪽의 <b>마른 수건</b>을 잡고 캔 표면을 <b>좌우로 3번 이상</b> 직접 닦아 보자.';syncDew();save()},STEP_PAUSE)}else if(dewStep===0&&!dewBusy){toast('점선 자리 안에 캔을 놓아 줘!')}}});
+  function syncDew(){updateSteps('#dewSteps',Math.min(dewStep,3));$('#toFog').disabled=!dewAnswered;can.classList.toggle('placed',dewStep>=1);$('#dewLab').classList.toggle('chilled',dewStep>=1);$('#canZone').classList.toggle('done',dewStep>=1);setStepVisible($('#canZone'),dewStep===0);setStepVisible(can,true);setStepVisible(towel,dewStep===1);setStepVisible(dewMag,dewStep===2);setReady(can,dewStep===0&&!dewBusy);setReady(towel,dewStep===1&&!dewBusy);setReady(dewMag,dewStep===2&&!dewBusy);if(dewStep>=1&&!can.classList.contains('dragging'))placeCanOnBench();if(dewStep>=3){$('#dewQuestion').classList.remove('hidden');$('#dewZoom').classList.add('on');if(!can.querySelector('.drop'))for(let i=0;i<28;i++)makeDropAt(8+Math.random()*82,10+Math.random()*78)}updateWipeMeter();updateDewMeter()}
+  makeDraggable(can,dewLab,{onMove:()=>{if(!dewBusy)$('#canZone').classList.toggle('hot',overlap(can,$('#canZone'),15))},onEnd:()=>{const ok=overlap(can,$('#canZone'),15);$('#canZone').classList.remove('hot');if(ok&&dewStep===0&&!dewBusy){dewBusy=true;can.classList.add('placed');placeCanOnBench();setReady(can,false);$('#dewNotice').innerHTML='✅ 차가운 캔을 준비했어! <b>차가운 캔의 표면</b>을 잠깐 살펴보자.';toast('차가운 캔 준비 완료!');setTimeout(()=>{dewStep=1;dewBusy=false;$('#dewNotice').innerHTML='② 이제 오른쪽의 <b>마른 수건</b>을 잡고 캔 표면을 <b>좌우로 3번 이상</b> 직접 닦아 보자.';syncDew();save()},STEP_PAUSE)}else if(dewStep===0&&!dewBusy){toast('점선 자리 안에 캔을 놓아 줘!')}}});
   makeDraggable(towel,dewLab,{onMove:()=>{if(dewStep!==1)return;const hit=overlap(towel,can,20);can.classList.toggle('wipe-hit',hit);if(hit){const tr=towel.getBoundingClientRect(),cr=can.getBoundingClientRect(),d=(tr.left+tr.width/2)-(cr.left+cr.width/2),side=d<-22?-1:d>22?1:0;if(side&&lastWipeSide&&side!==lastWipeSide){wipePasses++;updateWipeMeter();if(wipePasses>=3)completeWipe()}if(side)lastWipeSide=side}},onEnd:()=>can.classList.remove('wipe-hit')});
   makeDraggable(dewMag,dewLab,{onStart:()=>{if(dewStep===2)startDewWatch()},onMove:()=>{if(dewStep===2)can.classList.toggle('inspect-hit',overlap(dewMag,can,18))},onEnd:()=>{can.classList.remove('inspect-hit');clearInterval(dewWatch);dewWatch=null}});
   $$('[data-dew]').forEach(b=>b.onclick=()=>{if(dewAnswered)return;const ok=b.dataset.dew==='1';b.classList.add(ok?'correct':'wrong');if(ok){dewAnswered=true;dewStep=4;$('#dewNotice').innerHTML='정답! 공기 중 <b>수증기</b>가 차가운 캔 표면에서 차가워져 <b>물방울로 응결</b>한 것이 이슬이 생기는 원리야.';$('#toFog').disabled=false;updateSteps('#dewSteps',4);save()}else toast('한 번 더 생각해 보자!')});
@@ -468,13 +493,13 @@
   for(let i=0;i<6;i++){const ice=document.createElement('i');ice.className='ice';ice.style.left=(12+i*31)+'px';ice.style.top=(10+(i%2)*20)+'px';ice.style.setProperty('--r',(-18+Math.random()*36)+'deg');$('#icebag').appendChild(ice)}
   function addSmokeParticles(){const jar=$('#jar');jar.querySelectorAll('.smoke').forEach(e=>e.remove());for(let i=0;i<18;i++){const q=document.createElement('i');q.className='smoke';q.style.left=(20+Math.random()*160)+'px';q.style.top=(80+Math.random()*130)+'px';q.style.animationDelay=(-Math.random()*2.5)+'s';jar.appendChild(q)}}
   function addWarmVapor(){const jar=$('#jar');jar.querySelectorAll('.warm-vapor').forEach(e=>e.remove());for(let i=0;i<12;i++){const q=document.createElement('i');q.className='warm-vapor';q.style.left=(25+Math.random()*145)+'px';q.style.bottom=(50+Math.random()*12)+'px';q.style.animationDelay=(-Math.random()*3)+'s';jar.appendChild(q)}}
-  function makeFogSpecks(count=58){const host=$('#fogSpecks');host.innerHTML='';for(let i=0;i<count;i++){const d=document.createElement('i');d.className='fog-speck';const size=2+Math.random()*6;d.style.width=size+'px';d.style.height=size+'px';d.style.left=(8+Math.random()*84)+'%';d.style.top=(8+Math.random()*66)+'%';host.appendChild(d);d.animate([{opacity:0,transform:'scale(.2)'},{opacity:.7,transform:'scale(1)',offset:.25},{opacity:.4,transform:`translate(${-15+Math.random()*30}px,${-12+Math.random()*24}px)`},{opacity:.75,transform:'translate(0,0)'}],{duration:2400+Math.random()*2400,delay:Math.random()*1000,iterations:Infinity,direction:'alternate',easing:'ease-in-out'})}}
+  function makeFogSpecks(count=58){const host=$('#fogSpecks');host.innerHTML='';for(let i=0;i<count;i++){const d=document.createElement('i');d.className='fog-speck';const size=3+Math.random()*7;d.style.width=size+'px';d.style.height=size+'px';d.style.left=(8+Math.random()*84)+'%';d.style.top=(8+Math.random()*66)+'%';host.appendChild(d);d.animate([{opacity:0,transform:'scale(.2)'},{opacity:.7,transform:'scale(1)',offset:.25},{opacity:.4,transform:`translate(${-15+Math.random()*30}px,${-12+Math.random()*24}px)`},{opacity:.75,transform:'translate(0,0)'}],{duration:2400+Math.random()*2400,delay:Math.random()*1000,iterations:Infinity,direction:'alternate',easing:'ease-in-out'})}}
   let incenseVisited=false,fogObserveElapsed=0,fogWatch=null,fogBusy=false,fogObserveTouched=false;
   const fogLab=$('#fogLab'),cup=$('#pourCup'),incense=$('#incense'),icebag=$('#icebag'),fogMag=$('#fogMagnifier');
   function updateFogMeter(){const sec=Math.min(5,Math.floor(fogObserveElapsed/1000)),m=$('#fogMeter');m.classList.toggle('on',fogStep===3);m.querySelector('span').textContent=`관찰 ${sec} / 5초`;m.querySelector('i').style.width=(Math.min(fogObserveElapsed,5000)/5000*100)+'%'}
   function finishFogObservation(){
     if(fogStep>=4||fogBusy)return;
-    fogBusy=true;clearInterval(fogWatch);fogWatch=null;setReady(fogMag,false);$('#fog').classList.add('on');makeFogSpecks(68);$('#fogNote').classList.add('on');fogObserveElapsed=5000;updateFogMeter();
+    fogBusy=true;clearInterval(fogWatch);fogWatch=null;setReady(fogMag,false);setFogVisual(1);makeFogSpecks(95);$('#fogNote').classList.add('on');fogObserveElapsed=5000;updateFogMeter();
     $('#fogNotice').innerHTML='✅ 5초 관찰 완료! 집기병 안의 <b>뿌연 모습과 작은 물방울</b>을 잠깐 더 살펴보자.';
     setTimeout(()=>{fogStep=4;fogBusy=false;resetToolPosition(fogMag);$('#fogQuestion').classList.remove('hidden');$('#fogNotice').innerHTML='🌫️ 집기병 안이 뿌옇게 변했어. 화면 속 반짝이는 작은 점들은 공기 중에 떠 있는 <b>아주 작은 물방울</b>을 나타내.';syncFog();save()},STEP_PAUSE);
   }
@@ -484,20 +509,20 @@
       if(fogStep!==3||fogBusy)return;
       if(fogObserveTouched&&overlap(fogMag,$('#jar'),10)){
         fogObserveElapsed=Math.min(5000,fogObserveElapsed+200);
-        if(fogObserveElapsed%1000<220){$('#fog').classList.add('on');makeFogSpecks(18+Math.floor(fogObserveElapsed/150))}
+        const fogRatio=fogObserveElapsed/5000;setFogVisual(.18+fogRatio*.82);if(fogObserveElapsed%1000<220){makeFogSpecks(28+Math.floor(fogObserveElapsed/95))}
         updateFogMeter();
         if(fogObserveElapsed>=5000)finishFogObservation();
       }
     },200);
   }
-  function syncFog(){updateSteps('#fogSteps',Math.min(fogStep,4));$('#toCloud').disabled=!fogAnswered;$('#water').classList.toggle('on',fogStep>=1);$('#coolZone').classList.toggle('on',fogStep>=3);$('#tempColumn').classList.toggle('cool',fogStep>=3);$('#waterZone').classList.toggle('done',fogStep>=1);$('#smokeZone').classList.toggle('done',fogStep>=2);$('#iceZone').classList.toggle('done',fogStep>=3);setStepVisible($('#waterZone'),fogStep===0);setStepVisible($('#smokeZone'),fogStep===1);setStepVisible($('#iceZone'),fogStep===2);setStepVisible(cup,fogStep===0);setStepVisible(incense,fogStep===1);setStepVisible(icebag,fogStep>=2);setStepVisible(fogMag,fogStep===3);setStepVisible($('#tempColumn'),fogStep>=3);setReady(cup,fogStep===0&&!fogBusy);setReady(incense,fogStep===1&&!fogBusy);setReady(icebag,fogStep===2&&!fogBusy);setReady(fogMag,fogStep===3&&!fogBusy);if(fogStep>=1)addWarmVapor();if(fogStep>=2)addSmokeParticles();if(fogStep>=3&&!icebag.classList.contains('dragging')){placeIcebagOnJar();icebag.classList.add('placed')}if(fogStep===3)startFogWatch();if(fogStep>=4){$('#fog').classList.add('on');if(!$('#fogSpecks').children.length)makeFogSpecks(68);$('#fogNote').classList.add('on');$('#fogQuestion').classList.remove('hidden')}updateFogMeter()}
-  makeDraggable(cup,fogLab,{onMove:()=>{if(!fogBusy)$('#waterZone').classList.toggle('hot',overlap(cup,$('#waterZone'),10))},onEnd:()=>{const ok=overlap(cup,$('#waterZone'),10);$('#waterZone').classList.remove('hot');if(ok&&fogStep===0&&!fogBusy){fogBusy=true;snapCenter(cup,$('#waterZone'),-20);setReady(cup,false);cup.classList.add('pour');$('#waterStream').classList.add('on');$('#fogNotice').innerHTML='💧 미지근한 물을 붓고 있어. 물이 들어가는 모습을 잠깐 살펴보자.';setTimeout(()=>{$('#water').classList.add('on');addWarmVapor();cup.classList.remove('pour');$('#waterStream').classList.remove('on');$('#fogNotice').innerHTML='✅ 미지근한 물이 들어갔어! 병 안의 변화를 잠깐 보고 다음 도구를 준비하자.';setTimeout(()=>{resetToolPosition(cup);fogStep=1;fogBusy=false;$('#fogNotice').innerHTML='② 이제 <b>향</b>을 잡아 집기병 안쪽으로 넣었다가 다시 밖으로 빼 보자.';syncFog();save()},STEP_PAUSE)},700)}else if(fogStep===0&&!fogBusy)toast('컵을 집기병 입구 쪽에 놓아 줘!')}});
+  function syncFog(){updateSteps('#fogSteps',Math.min(fogStep,4));$('#toCloud').disabled=!fogAnswered;$('#water').classList.toggle('on',fogStep>=1);$('#coolZone').classList.toggle('on',fogStep>=3);$('#tempColumn').classList.toggle('cool',fogStep>=3);$('#waterZone').classList.toggle('done',fogStep>=1);$('#smokeZone').classList.toggle('done',fogStep>=2);$('#iceZone').classList.toggle('done',fogStep>=3);setStepVisible($('#waterZone'),fogStep===0);setStepVisible($('#smokeZone'),fogStep===1);setStepVisible($('#iceZone'),fogStep===2);setStepVisible(cup,fogStep===0);setStepVisible(incense,fogStep===1);setStepVisible(icebag,fogStep>=2);setStepVisible(fogMag,fogStep===3);setStepVisible($('#tempColumn'),fogStep>=3);setReady(cup,fogStep===0&&!fogBusy);setReady(incense,fogStep===1&&!fogBusy);setReady(icebag,fogStep===2&&!fogBusy);setReady(fogMag,fogStep===3&&!fogBusy);if(fogStep>=1)addWarmVapor();if(fogStep>=2)addSmokeParticles();if(fogStep>=3&&!icebag.classList.contains('dragging')){placeIcebagOnJar();icebag.classList.add('placed')}if(fogStep===3)startFogWatch();if(fogStep>=4){setFogVisual(1);if(!$('#fogSpecks').children.length)makeFogSpecks(95);$('#fogNote').classList.add('on');$('#fogQuestion').classList.remove('hidden')}else if(fogStep<3){setFogVisual(0)}updateFogMeter()}
+  makeDraggable(cup,fogLab,{onMove:()=>{if(!fogBusy)$('#waterZone').classList.toggle('hot',overlap(cup,$('#waterZone'),10))},onEnd:()=>{const ok=overlap(cup,$('#waterZone'),10);$('#waterZone').classList.remove('hot');if(ok&&fogStep===0&&!fogBusy){fogBusy=true;prepareWaterPour();setReady(cup,false);requestAnimationFrame(()=>{cup.classList.add('pour');$('#waterStream').classList.add('on')});$('#fogNotice').innerHTML='💧 미지근한 물을 붓고 있어. 물이 들어가는 모습을 잠깐 살펴보자.';setTimeout(()=>{$('#water').classList.add('on');addWarmVapor();cup.classList.remove('pour');$('#waterStream').classList.remove('on');$('#fogNotice').innerHTML='✅ 미지근한 물이 들어갔어! 병 안의 변화를 잠깐 보고 다음 도구를 준비하자.';setTimeout(()=>{resetToolPosition(cup);fogStep=1;fogBusy=false;$('#fogNotice').innerHTML='② 이제 <b>향</b>을 잡아 집기병 안쪽으로 넣었다가 다시 밖으로 빼 보자.';syncFog();save()},STEP_PAUSE)},700)}else if(fogStep===0&&!fogBusy)toast('컵을 집기병 입구 쪽에 놓아 줘!')}});
   makeDraggable(incense,fogLab,{onMove:()=>{if(fogStep!==1||fogBusy)return;const hit=overlap(incense,$('#smokeZone'),18);$('#smokeZone').classList.toggle('hot',hit);if(hit){incenseVisited=true;addSmokeParticles()}else if(incenseVisited){fogBusy=true;incenseVisited=false;setReady(incense,false);$('#smokeZone').classList.remove('hot');$('#fogNotice').innerHTML='✅ 향을 넣었다가 뺐어! 병 안에 퍼지는 <b>향 연기</b>를 잠깐 관찰해 보자.';toast('향 연기 넣기 완료!');setTimeout(()=>{resetToolPosition(incense);fogStep=2;fogBusy=false;$('#fogNotice').innerHTML='③ 이제 <b>얼음 지퍼백</b>을 잡아 집기병 위에 정확히 올려 보자.';syncFog();save()},STEP_PAUSE)}},onEnd:()=>{$('#smokeZone').classList.remove('hot');if(fogStep===1&&incenseVisited&&!fogBusy)toast('향을 다시 병 밖으로 빼 줘!')}});
   makeDraggable(icebag,fogLab,{onMove:()=>{if(!fogBusy)$('#iceZone').classList.toggle('hot',overlap(icebag,$('#iceZone'),8))},onEnd:()=>{const ok=overlap(icebag,$('#iceZone'),8);$('#iceZone').classList.remove('hot');if(ok&&fogStep===2&&!fogBusy){fogBusy=true;placeIcebagOnJar();icebag.classList.add('placed');setReady(icebag,false);$('#coolZone').classList.add('on');$('#tempColumn').classList.add('cool');$('#fogNotice').innerHTML='🧊 얼음 지퍼백을 올렸어! 위쪽 공기가 <b>차가워지는 모습</b>을 잠깐 살펴보자.';toast('얼음 지퍼백을 올렸어!');setTimeout(()=>{fogStep=3;fogBusy=false;fogObserveElapsed=0;fogObserveTouched=false;$('#fogNotice').innerHTML='④ 이제 <b>돋보기</b>를 병 위로 옮겨 놓아 보자. 병 위에 두면 <b>5초 관찰</b>이 이어서 진행돼.';syncFog();save()},STEP_PAUSE+300)}else if(fogStep===2&&!fogBusy)toast('집기병 위 점선 자리에 올려 줘!')}});
   makeDraggable(fogMag,fogLab,{onStart:()=>{if(fogStep===3&&!fogBusy){fogObserveTouched=true;startFogWatch();$('#fogNotice').innerHTML='🔎 좋아! 돋보기를 <b>집기병 위에 두고</b> 5초 동안 변화를 관찰해 보자.'}},onMove:()=>{if(fogStep===3&&!fogBusy){fogObserveTouched=true;startFogWatch()}},onEnd:()=>{if(fogStep===3&&!fogBusy){startFogWatch();if(overlap(fogMag,$('#jar'),10))toast('좋아! 병 위에 두면 관찰이 계속돼.');else toast('돋보기를 집기병 위에 놓아 줘!')}}});
   $$('[data-fog]').forEach(b=>b.onclick=()=>{if(fogAnswered)return;const ok=b.dataset.fog==='1';b.classList.add(ok?'correct':'wrong');if(ok){fogAnswered=true;fogStep=5;$('#fogNotice').innerHTML='정답! 공기 중 수증기가 차가워져 <b>작은 물방울로 응결</b>하고, 그 물방울들이 공기 중에 떠 있어서 안개처럼 보이는 거야.';$('#toCloud').disabled=false;updateSteps('#fogSteps',5);save()}else toast('힌트: 뿌연 모습은 아주 작은 물방울과 관련 있어!')});
 
-  window.addEventListener('resize',()=>{if(fogStep>=3&&!icebag.classList.contains('dragging'))requestAnimationFrame(placeIcebagOnJar)});
+  window.addEventListener('resize',()=>{if(dewStep>=1&&!can.classList.contains('dragging'))requestAnimationFrame(placeCanOnBench);if(fogStep===0&&cup.classList.contains('pour'))requestAnimationFrame(prepareWaterPour);if(fogStep>=3&&!icebag.classList.contains('dragging'))requestAnimationFrame(placeIcebagOnJar)});
 
   // ---------- 구름: 공기 덩어리를 직접 위·아래로 ----------
   for(let i=0;i<13;i++){const v=document.createElement('i');v.className='micro-vapor';v.style.left=(12+Math.random()*78)+'%';v.style.top=(12+Math.random()*72)+'%';v.style.animationDelay=(-Math.random()*2)+'s';$('#airball').appendChild(v)}
