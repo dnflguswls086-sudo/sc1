@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#f7fbff" />
+<title>경기초 5학년 과학실험 | 이슬·안개·구름 알아보기</title>
+<!-- v7: 안개 직접 관찰 오류 수정 + 단계별 여유 시간 추가 -->
+<style>
+  :root{
+    --ink:#16324a; --muted:#62798c; --line:#dbe7ef; --panel:#ffffff;
+    --sky:#eaf7ff; --blue:#4d9ed6; --blue2:#2879ad; --mint:#dff7ef;
+    --peach:#fff0df; --sun:#ffcb66; --good:#18794e; --bad:#b33a3a;
+    --shadow:0 14px 36px rgba(42,83,110,.12); --radius:24px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--ink);background:linear-gradient(180deg,#f7fbff 0%,#fffdf8 100%);min-height:100vh}
+  button,input,textarea{font:inherit}
+  button{cursor:pointer}
+  .shell{max-width:1050px;margin:auto;padding:18px 18px 90px}
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(247,251,255,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(219,231,239,.9);margin:0 -18px 20px;padding:10px 18px}
+  .topbar-inner{max-width:1050px;margin:auto;display:flex;align-items:center;gap:12px}
+  .brand{font-weight:900;letter-spacing:-.4px;white-space:nowrap}.brand small{display:block;font-size:11px;color:var(--muted);font-weight:700}
+  .progress{height:10px;background:#e7f0f6;border-radius:999px;overflow:hidden;flex:1}.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#73c7e8,#74d6b4);transition:.35s}
+  .icon-btn{border:1px solid var(--line);background:#fff;border-radius:14px;padding:9px 12px;color:var(--ink);font-weight:800}
+  .card{background:var(--panel);border:1px solid rgba(219,231,239,.9);box-shadow:var(--shadow);border-radius:var(--radius);padding:24px;margin:18px 0}
+  .hero{overflow:hidden;position:relative;padding:34px;background:linear-gradient(135deg,#eaf8ff 0%,#eefcf4 55%,#fff6e8 100%)}
+  .hero h1{font-size:clamp(31px,5vw,54px);line-height:1.05;margin:6px 0 14px;letter-spacing:-2px}
+  .hero p{font-size:17px;line-height:1.7;max-width:680px;color:#49677b;margin:0}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:900}
+  .bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.8)}
+  .b1{width:130px;height:130px;right:-28px;top:-18px}.b2{width:74px;height:74px;right:104px;bottom:18px}.b3{width:42px;height:42px;right:58px;bottom:96px}
+  h2{font-size:27px;letter-spacing:-1px;margin:0 0 10px} h3{margin:0 0 10px}
+  .sub{color:var(--muted);line-height:1.65;margin:0 0 18px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .field{display:flex;flex-direction:column;gap:7px}.field label{font-size:13px;font-weight:900;color:#49677b}.field input,.field textarea{border:1px solid #cfe0eb;border-radius:14px;padding:13px 14px;background:#fbfdff;color:var(--ink);outline:none}.field textarea{min-height:84px;resize:vertical}.field input:focus,.field textarea:focus{border-color:#67acd7;box-shadow:0 0 0 4px rgba(103,172,215,.12)}
+  .btn{border:0;border-radius:16px;padding:13px 18px;font-weight:900;box-shadow:0 6px 14px rgba(42,83,110,.09);transition:.18s transform,.18s opacity}.btn:active{transform:translateY(1px) scale(.99)}.btn.primary{background:#2d88bd;color:#fff}.btn.mint{background:#dff7ef;color:#11684a}.btn.peach{background:#fff0df;color:#8a5819}.btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}.btn.danger{background:#fff0f0;color:#a52a2a}
+  .btn:disabled{opacity:.42;cursor:not-allowed}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .mission-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}.mission{border:1px solid var(--line);border-radius:20px;padding:17px;background:rgba(255,255,255,.7)}.mission .num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#eaf7ff;font-weight:1000;margin-bottom:9px}.mission b{display:block;margin-bottom:5px}.mission span{font-size:13px;color:var(--muted);line-height:1.45}
+  section.stage{display:none}.stage.active{display:block;animation:enter .3s ease both}@keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:16px 0}.step{padding:11px;border-radius:15px;border:1px solid var(--line);background:#f8fbfd;text-align:center;font-size:13px;font-weight:900;color:#7990a0}.step.done{background:#e4f8ef;color:#16684b;border-color:#bce9d6}.step.current{background:#eaf6ff;color:#226c99;border-color:#acd8ef}
+  .sim-wrap{border:1px solid var(--line);border-radius:24px;background:linear-gradient(180deg,#eff9ff 0%,#fefefe 60%,#f6f1e8 60%,#f6f1e8 100%);min-height:410px;position:relative;overflow:hidden;padding:18px}
+  .sim-title{position:absolute;left:18px;top:16px;background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900;z-index:4}
+  .thermo{position:absolute;right:16px;top:14px;display:flex;gap:8px;z-index:5}.temp{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:12px;padding:7px 9px;font-size:12px;font-weight:900}
+  /* Dew can */
+  .dew-lab .can{position:absolute;width:155px;height:230px;left:50%;top:105px;transform:translateX(-50%);border-radius:22px 22px 30px 30px;background:linear-gradient(90deg,#a7b8c3 0%,#eef4f6 20%,#a8bbc5 51%,#eff5f6 76%,#91a8b5 100%);border:2px solid #859aa7;box-shadow:inset 0 0 0 5px rgba(255,255,255,.18),0 18px 25px rgba(47,69,81,.16)}
+  .dew-lab .can:before{content:"";position:absolute;left:8px;right:8px;top:-8px;height:16px;border-radius:50%;background:#c7d4da;border:2px solid #80939d}.dew-lab .can:after{content:"차가운 음료수 캔";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:132px;text-align:center;white-space:nowrap;font-size:13px;font-weight:1000;color:#36596c;background:rgba(255,255,255,.72);border:1px solid rgba(111,145,163,.35);border-radius:999px;padding:7px 6px;box-sizing:border-box;box-shadow:0 3px 9px rgba(55,83,98,.1);text-shadow:0 1px 0 rgba(255,255,255,.8);pointer-events:none}
+  .vapor{position:absolute;width:9px;height:9px;border-radius:50%;background:rgba(126,193,229,.3);animation:float 4s infinite linear}@keyframes float{0%{transform:translateY(0) scale(.8);opacity:.2}50%{opacity:.75}100%{transform:translateY(-70px) scale(1.2);opacity:0}}
+  .drop{position:absolute;width:9px;height:13px;border-radius:55% 55% 70% 70%;background:linear-gradient(#c8efff,#55b7e2);box-shadow:0 1px 2px rgba(0,80,130,.25);opacity:0;animation:dropIn .45s ease forwards}@keyframes dropIn{to{opacity:.92;transform:translateY(2px)}}
+  .towel{position:absolute;width:150px;height:70px;background:repeating-linear-gradient(45deg,#fff6df,#fff6df 8px,#f7e9c7 8px,#f7e9c7 16px);border:1px solid #e2cf9b;border-radius:14px;left:calc(50% + 105px);top:218px;transform:rotate(-9deg);opacity:.0;transition:.35s;box-shadow:0 8px 18px rgba(80,70,40,.12)}.towel.show{opacity:1}.towel.wipe{animation:wipe 1.4s ease}@keyframes wipe{0%{transform:translateX(0) rotate(-9deg)}50%{transform:translateX(-220px) rotate(4deg)}100%{transform:translateX(0) rotate(-9deg)}}
+  .notice{border-left:5px solid #78b9df;background:#f1f9ff;border-radius:15px;padding:13px 15px;line-height:1.55;margin:14px 0;color:#395d74}.notice.safe{border-left-color:#f0b84f;background:#fff9e9;color:#70511d}
+  .observe{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:16px}.question{border:1px solid var(--line);border-radius:20px;padding:17px;background:#fff}.choices{display:grid;gap:9px;margin-top:10px}.choice{border:1px solid #d8e6ee;background:#fbfdff;border-radius:14px;padding:12px 13px;text-align:left;color:var(--ink);font-weight:800}.choice:hover{border-color:#7fb9da}.choice.correct{background:#e8f8ef;border-color:#8fd4b4;color:#11633f}.choice.wrong{background:#fff0f0;border-color:#e7a5a5;color:#962e2e}
+  /* Fog jar */
+  .fog-lab{background:linear-gradient(180deg,#eef9ff 0%,#f9fdff 58%,#f4f0e8 58%)}
+  .jar{position:absolute;left:50%;top:86px;transform:translateX(-50%);width:205px;height:290px;border:4px solid rgba(109,145,165,.5);border-top-width:8px;border-radius:32px 32px 45px 45px;background:linear-gradient(90deg,rgba(255,255,255,.28),rgba(186,223,240,.13),rgba(255,255,255,.38));box-shadow:inset 0 0 20px rgba(84,150,183,.1),0 18px 25px rgba(47,69,81,.12);overflow:hidden}
+  .water{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(rgba(95,189,225,.45),rgba(51,143,191,.62));transition:.7s}.water.on{height:70px}
+  .fog{position:absolute;left:10px;right:10px;top:24px;bottom:72px;opacity:0;filter:blur(.3px);transition:1.2s;background:radial-gradient(circle at 20% 35%,rgba(255,255,255,.95) 0 7%,transparent 8%),radial-gradient(circle at 55% 22%,rgba(255,255,255,.93) 0 9%,transparent 10%),radial-gradient(circle at 75% 52%,rgba(255,255,255,.9) 0 12%,transparent 13%),radial-gradient(circle at 35% 68%,rgba(255,255,255,.9) 0 13%,transparent 14%),radial-gradient(circle at 55% 50%,rgba(240,250,255,.86) 0 20%,transparent 22%)}.fog.on{opacity:.92;animation:pulsefog 3s ease-in-out infinite}@keyframes pulsefog{50%{transform:scale(1.03);opacity:.75}}
+  .smoke{position:absolute;width:7px;height:7px;border-radius:50%;background:rgba(105,112,120,.46);opacity:0;animation:smokeUp 2.7s linear infinite}@keyframes smokeUp{0%{transform:translateY(90px) scale(.5);opacity:0}25%{opacity:.6}100%{transform:translateY(-85px) scale(2.2);opacity:0}}
+  .icebag{position:absolute;left:50%;top:42px;transform:translateX(-50%) translateY(-35px);width:245px;height:70px;border-radius:44% 48% 38% 46%;background:rgba(220,244,255,.84);border:3px solid rgba(113,175,204,.45);box-shadow:inset 0 -8px 18px rgba(91,160,195,.15);opacity:0;transition:.55s;z-index:3}.icebag.on{opacity:1;transform:translateX(-50%) translateY(0)}.ice{position:absolute;width:34px;height:24px;border-radius:8px;background:#d7f1ff;border:1px solid #a5d8ef;transform:rotate(var(--r))}
+  .incense{position:absolute;left:calc(50% + 135px);top:215px;width:7px;height:115px;background:#7f5e46;border-radius:8px;transform:rotate(12deg);transform-origin:bottom;opacity:0;transition:.3s}.incense.on{opacity:1}.incense:before{content:"";position:absolute;top:-7px;left:-2px;width:11px;height:11px;border-radius:50%;background:#e76d3b;box-shadow:0 0 10px #f1a157}
+  /* cloud */
+  .cloud-lab{min-height:460px;background:linear-gradient(180deg,#a8ddfb 0%,#e7f7ff 55%,#b9dd8f 55%,#7db76f 100%)}
+  .mountain{position:absolute;left:0;right:0;bottom:-50px;height:250px;background:linear-gradient(135deg,transparent 0 28%,#7ea76f 28% 48%,transparent 48%),linear-gradient(225deg,transparent 0 30%,#6e9b64 30% 55%,transparent 55%);opacity:.65}
+  .airball{position:absolute;left:15%;bottom:58px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.7);border:3px dashed rgba(50,123,167,.5);display:grid;place-items:center;text-align:center;font-weight:1000;transition:1.3s ease;z-index:4;box-shadow:0 8px 20px rgba(31,90,125,.12)}.airball.up{bottom:280px;left:54%;transform:scale(.82);background:rgba(242,250,255,.9)}
+  .cloudshape{position:absolute;left:46%;top:84px;width:210px;height:75px;border-radius:50px;background:#fff;opacity:0;transition:1s;box-shadow:55px 15px 0 12px #fff,105px 0 0 4px #fff,28px -22px 0 5px #fff,85px -28px 0 8px #fff,0 12px 28px rgba(61,112,143,.16)}.cloudshape.on{opacity:.95}
+  .altimeter{position:absolute;right:18px;bottom:20px;background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.9);border-radius:18px;padding:12px 14px;z-index:5;font-size:13px;font-weight:900}
+  .compare{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.compare-card{border:1px solid var(--line);border-radius:20px;padding:18px;text-align:center}.compare-card .emoji{font-size:42px}.compare-card strong{display:block;font-size:20px;margin:6px 0}.compare-card p{font-size:14px;color:var(--muted);line-height:1.55;margin:0}
+  .quiz-item{border:1px solid var(--line);border-radius:18px;padding:17px;margin:11px 0}.quiz-item b{display:block;margin-bottom:9px}.resultbox{padding:20px;border-radius:22px;background:linear-gradient(135deg,#edfaff,#f2fbf5,#fff7eb);border:1px solid var(--line)}.score{font-size:54px;font-weight:1000;letter-spacing:-2px}.stars{font-size:28px;letter-spacing:4px}
+  .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#edf6fb;color:#37718f;font-size:12px;font-weight:900}.hidden{display:none!important}
+  .footer-note{text-align:center;color:#7f94a2;font-size:12px;margin-top:24px;line-height:1.6}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#16324a;color:#fff;padding:12px 16px;border-radius:14px;font-weight:800;opacity:0;pointer-events:none;transition:.25s;z-index:100}.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* ===== Enhanced science animations v2 ===== */
+  .sim-wrap{isolation:isolate}
+  .lab-floor{position:absolute;left:0;right:0;bottom:0;height:40%;background:linear-gradient(180deg,#f4efe6,#e8dfd1);z-index:-2}
+  .lab-shadow{position:absolute;left:50%;bottom:35px;width:240px;height:34px;transform:translateX(-50%);border-radius:50%;background:rgba(38,66,82,.12);filter:blur(10px);z-index:-1}
+  .science-label{position:absolute;z-index:6;background:rgba(255,255,255,.92);border:1px solid var(--line);box-shadow:0 8px 20px rgba(42,83,110,.09);border-radius:13px;padding:8px 10px;font-size:12px;font-weight:900;color:#41677d;line-height:1.35;pointer-events:none}
+  .science-label small{display:block;font-size:10px;color:#8297a4;margin-top:2px}
+  .particle-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+
+  /* Dew v2 */
+  .dew-lab{background:linear-gradient(180deg,#e8f6ff 0%,#fafdff 59%,#f4efe7 59%,#ebe2d6 100%)}
+  .dew-lab .cold-halo{position:absolute;left:50%;top:95px;width:225px;height:260px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(117,205,244,.22),rgba(117,205,244,.08) 50%,transparent 72%);filter:blur(2px);opacity:0;transition:.6s}
+  .dew-lab.chilled .cold-halo{opacity:1;animation:coldBreath 2.8s ease-in-out infinite}
+  @keyframes coldBreath{50%{transform:translateX(-50%) scale(1.08);opacity:.65}}
+  .dew-lab .can{z-index:3;overflow:visible}
+  .dew-lab .can .shine{position:absolute;left:17px;top:18px;width:20px;height:160px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,255,255,.04));filter:blur(1px);pointer-events:none}
+  .dew-lab .can .cold-lines{position:absolute;inset:-18px;pointer-events:none;opacity:0;transition:.5s}
+  .dew-lab.chilled .cold-lines{opacity:1}
+  .cold-line{position:absolute;width:2px;height:24px;background:linear-gradient(transparent,#7bd1f1,transparent);border-radius:99px;animation:coldLine 2s ease-in-out infinite;opacity:.6}
+  @keyframes coldLine{0%,100%{transform:translateY(7px);opacity:.15}50%{transform:translateY(-6px);opacity:.75}}
+  .vapor{width:7px;height:7px;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.98),rgba(112,190,229,.48) 55%,rgba(112,190,229,.08));box-shadow:0 0 0 1px rgba(105,178,216,.12);z-index:1}
+  .vapor.travel{animation:none!important;will-change:transform,opacity}
+  .drop{z-index:5;transform-origin:50% 0;animation:dropGrow .5s cubic-bezier(.2,.8,.2,1) forwards,dewSlide 5s 1.4s ease-in infinite}
+  @keyframes dropGrow{from{opacity:0;transform:scale(.15)}to{opacity:.96;transform:scale(1)}}
+  @keyframes dewSlide{0%,65%{translate:0 0}82%{translate:0 9px}100%{translate:0 18px;opacity:.55}}
+  .dew-zoom{position:absolute;right:22px;bottom:20px;width:195px;height:145px;border-radius:20px;background:rgba(255,255,255,.93);border:1px solid #cfe4f0;box-shadow:0 12px 26px rgba(50,93,118,.14);z-index:6;padding:11px;transform:translateY(12px);opacity:0;transition:.5s}
+  .dew-zoom.on{transform:none;opacity:1}
+  .zoom-title{font-size:11px;font-weight:1000;color:#4b7187;margin-bottom:6px}
+  .zoom-lens{height:96px;border-radius:16px;background:linear-gradient(180deg,#dff3fb,#c9e7f2);position:relative;overflow:hidden;border:1px solid #b9d9e8}
+  .zoom-vapor{position:absolute;width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.85);border:1px solid rgba(93,166,203,.36);animation:zoomDrift 3s ease-in-out infinite}
+  @keyframes zoomDrift{50%{transform:translate(12px,-7px)}}
+  .zoom-drop{position:absolute;width:11px;height:15px;border-radius:55% 55% 70% 70%;background:linear-gradient(#e9f9ff,#52b5df);opacity:0;transform:scale(.2)}
+  .dew-zoom.on .zoom-drop{animation:zoomCondense 1.2s ease forwards}
+  @keyframes zoomCondense{60%{opacity:.25;transform:scale(.5)}100%{opacity:1;transform:scale(1)}}
+  .dew-arrow{position:absolute;left:calc(50% - 260px);top:160px;width:130px;height:60px;z-index:2;opacity:0;transition:.4s}
+  .dew-lab.chilled .dew-arrow{opacity:.85}
+  .dew-arrow:before{content:"수증기 이동";position:absolute;top:-18px;left:4px;font-size:11px;font-weight:900;color:#5791b1}
+  .dew-arrow:after{content:"→";font-size:55px;color:#77badc;display:block;animation:arrowPulse 1.6s ease-in-out infinite}
+  @keyframes arrowPulse{50%{transform:translateX(8px);opacity:.55}}
+
+  /* Fog v2 */
+  .fog-lab{background:linear-gradient(180deg,#dff2ff 0%,#f9fdff 60%,#f0ece5 60%,#e9e1d7 100%)}
+  .fog-lab .jar{z-index:3;overflow:hidden;background:linear-gradient(90deg,rgba(255,255,255,.42),rgba(180,220,239,.08) 45%,rgba(255,255,255,.32));backdrop-filter:blur(.2px)}
+  .jar:after{content:"";position:absolute;left:14px;top:18px;width:18px;height:200px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,0));opacity:.6;pointer-events:none}
+  .water.on:before{content:"";position:absolute;left:-15%;right:-15%;top:-7px;height:15px;border-radius:50%;border-top:3px solid rgba(255,255,255,.62);animation:waterWave 1.6s ease-in-out infinite}
+  @keyframes waterWave{50%{transform:translateX(8px) scaleX(.92)}}
+  .pour-cup{position:absolute;left:calc(50% - 210px);top:110px;width:88px;height:80px;border-radius:10px 10px 24px 24px;background:linear-gradient(90deg,#d4edf8,#f7fdff,#bcdceb);border:2px solid #8fbfd4;transform:rotate(0);opacity:.88;z-index:5;transition:.4s}
+  .pour-cup:before{content:"";position:absolute;right:-27px;top:12px;width:34px;height:20px;border:6px solid #a7d0e2;border-left:0;border-radius:0 25px 25px 0}
+  .pour-cup.pour{animation:cupPour 1.6s ease}
+  @keyframes cupPour{0%,100%{transform:rotate(0)}35%,70%{transform:translate(65px,18px) rotate(58deg)}}
+  .water-stream{position:absolute;left:calc(50% - 83px);top:168px;width:8px;height:0;border-radius:999px;background:linear-gradient(#bfeaff,#66b9df);z-index:4;opacity:0;transform:rotate(-12deg);transform-origin:top;transition:.2s}
+  .water-stream.on{animation:streamPour 1.15s .4s ease both}
+  @keyframes streamPour{0%{height:0;opacity:0}20%,75%{height:130px;opacity:.75}100%{height:0;opacity:0}}
+  .incense{z-index:7;transform:rotate(12deg);transition:.3s}
+  .incense.dip{animation:incenseDip 2s ease}
+  @keyframes incenseDip{0%,100%{transform:rotate(12deg)}35%,70%{transform:translate(-145px,-30px) rotate(-18deg)}}
+  .warm-vapor{position:absolute;width:12px;height:12px;border-radius:50%;background:rgba(201,238,251,.56);filter:blur(.5px);animation:warmRise 3.2s ease-in infinite;z-index:2}
+  @keyframes warmRise{0%{transform:translateY(0) scale(.6);opacity:0}25%{opacity:.7}100%{transform:translateY(-120px) scale(1.7);opacity:0}}
+  .fog-speck{position:absolute;border-radius:50%;background:rgba(252,254,255,.9);box-shadow:0 0 7px rgba(255,255,255,.85);z-index:6;opacity:0;will-change:transform,opacity}
+  .fog.on{background:radial-gradient(circle at 50% 55%,rgba(244,252,255,.64),transparent 62%);filter:blur(1.5px)}
+  .cool-zone{position:absolute;left:50%;top:66px;transform:translateX(-50%);width:240px;height:140px;background:linear-gradient(180deg,rgba(122,205,241,.22),transparent);border-radius:50%;opacity:0;transition:.7s;filter:blur(8px);z-index:2}
+  .cool-zone.on{opacity:1;animation:coolPulse 2.3s ease-in-out infinite}
+  @keyframes coolPulse{50%{transform:translateX(-50%) scale(1.08);opacity:.55}}
+  .temp-column{position:absolute;right:25px;top:85px;width:92px;border-radius:17px;background:rgba(255,255,255,.9);border:1px solid var(--line);padding:10px;z-index:7;font-size:11px;font-weight:900;color:#537486;line-height:1.45}
+  .temp-bar{height:145px;width:12px;border-radius:99px;background:linear-gradient(#78c9ee,#d9f1f7 42%,#ffd7a6 70%,#ef9d62);margin:8px auto;position:relative}
+  .temp-dot{position:absolute;width:22px;height:22px;border-radius:50%;left:50%;top:80%;transform:translate(-50%,-50%);background:#fff;border:3px solid #ef9d62;transition:1s}
+  .temp-column.cool .temp-dot{top:20%;border-color:#62b7df}
+  .fog-note{position:absolute;left:22px;bottom:18px;z-index:7;background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:14px;padding:9px 11px;font-size:11px;font-weight:900;color:#557587;max-width:185px;opacity:0;transform:translateY(8px);transition:.5s}
+  .fog-note.on{opacity:1;transform:none}
+
+  /* Cloud v2 */
+  .cloud-lab{min-height:500px;background:linear-gradient(180deg,#75c8f3 0%,#cceeff 46%,#e9f7fb 62%,#aad184 62%,#6fa565 100%)}
+  .cloud-lab .sun{position:absolute;right:54px;top:48px;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,#fff4ab 0 25%,#ffd86d 55%,rgba(255,211,93,.15) 72%);box-shadow:0 0 45px rgba(255,210,93,.55);animation:sunGlow 3s ease-in-out infinite}
+  @keyframes sunGlow{50%{transform:scale(1.05);box-shadow:0 0 60px rgba(255,210,93,.7)}}
+  .cloud-lab .mountain{opacity:.78;bottom:-35px;height:255px}
+  .ground-heat{position:absolute;left:9%;bottom:84px;width:160px;height:95px;opacity:.72}
+  .heat-wave{position:absolute;bottom:0;width:18px;height:75px;border-left:4px solid rgba(255,230,170,.72);border-radius:50%;animation:heatRise 2.2s ease-in-out infinite}
+  @keyframes heatRise{0%,100%{transform:translateY(10px) skewX(-8deg);opacity:.25}50%{transform:translateY(-8px) skewX(10deg);opacity:.9}}
+  .alt-band{position:absolute;left:0;right:0;border-top:1px dashed rgba(255,255,255,.55);z-index:1;pointer-events:none}
+  .alt-band span{position:absolute;left:16px;top:-13px;background:rgba(255,255,255,.73);border-radius:999px;padding:4px 8px;font-size:10px;font-weight:900;color:#4b7990}
+  .band-low{bottom:135px}.band-mid{bottom:255px}.band-high{bottom:375px}
+  .rise-path{position:absolute;left:20%;bottom:105px;width:370px;height:300px;border:3px dashed rgba(255,255,255,.6);border-left-color:transparent;border-bottom-color:transparent;border-radius:50% 60% 30% 55%;transform:rotate(-18deg);z-index:2;opacity:.85}
+  .rise-arrow{position:absolute;font-size:28px;color:rgba(255,255,255,.88);z-index:2;animation:riseArrow 1.7s ease-in-out infinite}
+  .ra1{left:31%;bottom:175px}.ra2{left:43%;bottom:268px;animation-delay:.3s}.ra3{left:55%;bottom:348px;animation-delay:.6s}
+  @keyframes riseArrow{50%{transform:translate(8px,-9px);opacity:.45}}
+  .airball{z-index:7;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.96),rgba(255,244,207,.82));border:3px dashed rgba(232,151,73,.62);box-shadow:0 12px 30px rgba(35,94,126,.15);transition:none;overflow:hidden}
+  .airball .micro-vapor{position:absolute;width:7px;height:7px;border-radius:50%;background:rgba(97,175,216,.45);animation:microMove 2.1s ease-in-out infinite}
+  @keyframes microMove{50%{transform:translate(8px,-6px)}}
+  .airball.cooling{background:radial-gradient(circle at 35% 30%,#fff,rgba(220,244,255,.9));border-color:rgba(70,157,205,.65)}
+  .cloudshape{z-index:6;filter:drop-shadow(0 14px 14px rgba(64,116,143,.16));transform:scale(.65);transform-origin:center;transition:.9s cubic-bezier(.2,.9,.2,1)}
+  .cloudshape.on{opacity:.97;transform:scale(1)}
+  .cloudshape:before,.cloudshape:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.96)}
+  .cloudshape:before{width:120px;height:95px;left:30px;top:-35px}.cloudshape:after{width:95px;height:80px;right:-25px;top:-12px}
+  .cloud-droplet{position:absolute;width:6px;height:6px;border-radius:50%;background:rgba(149,210,236,.8);opacity:0;z-index:8}
+  .cloudshape.on .cloud-droplet{animation:cloudDropIn .9s ease forwards}
+  @keyframes cloudDropIn{from{opacity:0;transform:scale(.2)}to{opacity:.9;transform:scale(1)}}
+  .altimeter{min-width:185px;text-align:center;transition:.35s}
+  .process-strip{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:5px;z-index:9;background:rgba(255,255,255,.88);padding:7px;border-radius:999px;border:1px solid rgba(255,255,255,.92);box-shadow:0 7px 20px rgba(45,93,120,.12)}
+  .process-chip{font-size:10px;font-weight:1000;color:#718c9c;border-radius:999px;padding:6px 8px;transition:.3s;white-space:nowrap}
+  .process-chip.on{background:#e3f5ff;color:#2776a4}
+  .cloud-lab.animating .altimeter{animation:meterPulse .8s ease-in-out infinite alternate}
+  @keyframes meterPulse{to{transform:scale(1.03)}}
+  @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+
+  @media(max-width:760px){
+    .shell{padding:10px 12px 72px}.topbar{margin:0 -12px 14px;padding:8px 12px}.brand{font-size:13px}.brand small{display:none}.icon-btn{padding:8px 10px;font-size:12px}
+    .card{padding:18px;border-radius:20px}.hero{padding:24px 20px}.hero h1{font-size:36px}
+    .grid2,.grid3,.observe,.mission-row,.compare{grid-template-columns:1fr}.stepper{grid-template-columns:1fr 1fr}.sim-wrap{min-height:380px}.dew-lab .can{top:95px}.towel{left:calc(50% + 65px);top:228px;width:125px}.fog-lab{min-height:420px}.incense{left:calc(50% + 115px)}.cloudshape{left:35%;transform:scale(.62)}.airball.up{left:50%}.dew-zoom{width:155px;right:8px;bottom:10px}.dew-arrow{left:10px;top:160px}.pour-cup{left:12px;transform:scale(.82)}.temp-column{right:8px;top:100px;transform:scale(.82);transform-origin:top right}.fog-note{left:8px;bottom:8px}.process-strip{max-width:96%;overflow:auto}.process-chip{font-size:9px;padding:5px 7px}.rise-path{left:10%;width:300px}.cloud-lab{min-height:470px}
+  }
+
+  /* ===== 직접 조작형 실험 v3 ===== */
+  .gesture-tip{display:inline-flex;align-items:center;gap:8px;margin:0 0 12px;padding:9px 13px;border-radius:999px;background:#fff8df;border:1px solid #f1df9e;color:#725718;font-size:12px;font-weight:900}
+  .direct-lab{min-height:520px;touch-action:none;user-select:none;-webkit-user-select:none}
+  .drag-item{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;z-index:20;transition:filter .25s,opacity .25s,box-shadow .25s;will-change:left,top}
+  .drag-item.dragging{cursor:grabbing;filter:drop-shadow(0 12px 14px rgba(31,72,98,.22));z-index:40!important;animation:none!important}
+  .drag-item.locked{pointer-events:none!important;opacity:1;filter:none;box-shadow:none!important}
+  .step-hidden{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+  .step-hidden.ready{animation:none!important}
+  .drop-zone.step-hidden{opacity:0!important;visibility:hidden!important}
+  .temp-column.step-hidden{opacity:0!important;visibility:hidden!important}
+  .drag-item.ready{animation:toolReady 1.15s ease-in-out infinite}
+  @keyframes toolReady{50%{filter:drop-shadow(0 0 13px rgba(67,169,216,.72));transform:scale(1.035)}}
+  .tool-tag{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.94);border:1px solid var(--line);font-size:10px;color:#4b7187;box-shadow:0 4px 10px rgba(40,77,100,.08);pointer-events:none}
+  .drop-zone{position:absolute;border:3px dashed rgba(72,153,197,.55);background:rgba(226,246,255,.46);border-radius:24px;display:grid;place-items:center;text-align:center;color:#4680a1;font-size:11px;font-weight:1000;z-index:1;transition:.2s;pointer-events:none}
+  .drop-zone.hot{background:rgba(211,244,233,.78);border-color:#54b78f;transform:scale(1.035)}
+  .drop-zone.done{opacity:.14}
+  .can-zone{left:50%;top:102px;transform:translateX(-50%);width:185px;height:270px;border-radius:30px}
+  .dew-vapor-label{left:18px;top:83px}
+  .dew-lab .can.drag-item{left:42px;top:225px;transform:none;width:118px;height:175px}
+  .dew-lab .can.drag-item:after{bottom:-34px}
+  .dew-lab .can.drag-item.placed{width:155px;height:230px}
+  .dew-lab .towel.drag-item{display:flex;align-items:center;justify-content:center;opacity:1;left:auto;right:32px;top:250px;width:150px;height:74px;transform:rotate(-7deg);font-size:12px;font-weight:900;color:#785f2b}
+  .dew-lab .towel.drag-item.dragging{transform:none}
+  .magnifier{position:absolute;width:86px;height:86px;border:11px solid #497995;border-radius:50%;background:rgba(223,246,255,.28);box-shadow:inset 0 0 0 4px rgba(255,255,255,.6),0 8px 18px rgba(43,91,118,.16)}
+  .magnifier:after{content:"";position:absolute;width:70px;height:14px;background:#497995;border-radius:999px;right:-58px;bottom:-27px;transform:rotate(47deg);transform-origin:left center}
+  .magnifier i{position:absolute;inset:9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.75),rgba(127,205,238,.15));pointer-events:none}
+  #dewMagnifier{left:43px;top:105px}
+  .observe-meter,.wipe-meter{position:absolute;left:18px;bottom:18px;width:200px;background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:14px;padding:8px 10px;z-index:18;opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none}
+  .observe-meter.on,.wipe-meter.on{opacity:1;transform:none}
+  .observe-meter span,.wipe-meter span{display:block;font-size:10px;font-weight:1000;color:#527386;margin-bottom:5px}
+  .observe-meter>i,.wipe-meter>i{display:block;height:7px;width:0;border-radius:999px;background:linear-gradient(90deg,#78c9ed,#67d4aa);transition:width .18s}
+  .wipe-meter{left:auto;right:18px}
+
+  .fog-lab .pour-cup.drag-item{left:34px;top:250px;opacity:1;transform:none}
+  .fog-lab .incense.drag-item{left:auto;right:54px;top:238px;opacity:1;transform:rotate(10deg);height:105px}
+  .fog-lab .icebag.drag-item{left:32px;top:auto;bottom:34px;opacity:1;transform:none;width:215px;height:64px}
+  .fog-lab .icebag.drag-item.placed{opacity:1!important;transform:none!important}
+  .fog-mag{right:55px;top:100px}
+  .jar-mouth-zone{left:50%;top:70px;transform:translateX(-50%);width:230px;height:92px;border-radius:50%}
+  .smoke-zone{left:50%;top:128px;transform:translateX(-50%);width:185px;height:190px}
+  .ice-zone{left:50%;top:52px;transform:translateX(-50%);width:245px;height:74px;border-radius:999px}
+  .fog-meter{left:18px;bottom:18px}
+  .fog-lab .temp-column{z-index:10}
+
+  .cloud-lab .drag-air{transition:filter .2s,background .3s,border-color .3s!important;left:12%;bottom:62px;width:125px;height:125px}
+  .cloud-lab .drag-air.dragging{transform:none!important}
+  .cloud-lab .cloudshape{pointer-events:none}
+  .cloud-lab .process-strip{pointer-events:none}
+  .cloud-lab .rise-path,.cloud-lab .rise-arrow{pointer-events:none}
+
+  @media(max-width:760px){
+    .direct-lab{min-height:560px}
+    .dew-lab .can.drag-item{left:20px;top:300px;width:95px;height:142px}.dew-lab .can.drag-item.placed{width:130px;height:195px}
+    .dew-lab .towel.drag-item{right:18px;top:330px;width:118px;height:62px}.can-zone{top:125px;width:155px;height:230px}
+    #dewMagnifier{left:18px;top:110px;width:72px;height:72px}.magnifier:after{width:55px;right:-46px;bottom:-23px}
+    .dew-vapor-label{top:76px;left:10px;max-width:150px}.dew-zoom{right:8px;bottom:70px}
+    .observe-meter,.wipe-meter{width:155px}.wipe-meter{right:10px}.observe-meter{left:10px}
+    .fog-lab .pour-cup.drag-item{left:20px;top:350px}.fog-lab .incense.drag-item{right:35px;top:360px}.fog-lab .icebag.drag-item{left:18px;top:auto;bottom:30px;width:170px}.fog-mag{right:24px;top:100px}
+    .jar-mouth-zone{top:78px;width:205px}.smoke-zone{top:145px;width:170px;height:185px}.ice-zone{top:58px;width:220px}
+    .fog-lab .temp-column{right:5px;top:175px;transform:scale(.72);transform-origin:top right}.fog-note{bottom:64px}
+    .cloud-lab .drag-air{left:6%;bottom:70px;width:105px;height:105px}.cloud-lab{min-height:560px}.cloudshape{left:39%!important}.altimeter{bottom:70px}
+    .tool-tag{font-size:9px}
+  }
+
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-inner">
+  <div class="brand">경기초 5학년 과학실험<small>이슬 · 안개 · 구름 탐구</small></div>
+  <div class="progress" aria-label="진행률"><i id="progressBar"></i></div>
+  <button class="icon-btn" id="homeBtn" type="button">⌂ 처음</button>
+</div></div>
+
+<main class="shell">
+  <section id="stageStart" class="stage active">
+    <div class="card hero">
+      <span class="eyebrow">🔬 오늘의 가상 실험</span>
+      <h1>이슬·안개·구름<br>어떻게 생길까?</h1>
+      <p>교과서 실험을 화면에서 직접 순서대로 해 보고, 공기 중 <b>수증기가 물방울로 변하는 과정</b>을 찾아보자.</p>
+      <i class="bubble b1"></i><i class="bubble b2"></i><i class="bubble b3"></i>
+    </div>
+    <div class="card">
+      <h2>탐구자 등록</h2>
+      <div class="grid3">
+        <div class="field"><label for="className">반</label><input id="className" placeholder="예: 난초반 / 1반" maxlength="12"></div>
+        <div class="field"><label for="studentNo">번호</label><input id="studentNo" inputmode="numeric" placeholder="예: 7" maxlength="3"></div>
+        <div class="field"><label for="studentName">이름 또는 별명</label><input id="studentName" placeholder="예: 홍길동" maxlength="12"></div>
+      </div>
+      <div class="mission-row">
+        <div class="mission"><div class="num">1</div><b>💧 이슬 실험</b><span>차가운 캔 표면에서 물방울이 생기는 까닭 관찰</span></div>
+        <div class="mission"><div class="num">2</div><b>🌫️ 안개 실험</b><span>집기병 안의 공기를 차갑게 만들어 안개 만들기</span></div>
+        <div class="mission"><div class="num">3</div><b>☁️ 구름 연결</b><span>공기가 위로 올라갈 때 구름이 생기는 과정 확인</span></div>
+      </div>
+      <div class="actions"><button class="btn primary" id="startBtn" type="button">실험 시작하기 →</button><button class="btn ghost" id="resumeBtn" type="button">이어하기</button></div>
+    </div>
+  </section>
+
+  <section id="stageDew" class="stage">
+    <div class="card">
+      <span class="pill">실험 1</span><h2>💧 이슬 발생 실험</h2>
+      <p class="sub">버튼을 누르는 대신 <b>실험 도구를 직접 끌어서</b> 교과서 실험 순서대로 진행해 보자.</p>
+      <div class="stepper" id="dewSteps"><div class="step current">① 캔 옮기기</div><div class="step">② 직접 닦기</div><div class="step">③ 8초 관찰</div><div class="step">④ 까닭 설명</div></div>
+      <div class="gesture-tip">☝️ 도구를 손가락이나 마우스로 잡고 직접 움직여 봐!</div>
+      <div class="sim-wrap dew-lab direct-lab" id="dewLab">
+        <div class="sim-title">가상 실험대 · 직접 움직이는 실험</div>
+        <div class="thermo"><div class="temp">공기 24℃</div><div class="temp" id="canTemp">캔 5℃ ❄️</div></div>
+        <div class="lab-floor"></div><div class="lab-shadow"></div><div class="cold-halo"></div><div class="dew-arrow"></div>
+        <div class="particle-layer" id="dewParticles"></div>
+        <div class="science-label dew-vapor-label">공기 중 수증기<small>실제로는 보이지 않지만 파란 입자로 표현했어</small></div>
+        <div class="drop-zone can-zone" id="canZone"><span>① 차가운 캔을<br>여기에 놓기</span></div>
+        <div class="can drag-item" id="can" aria-label="차가운 음료수 캔"><span class="shine"></span><span class="cold-lines" id="coldLines"></span><b class="tool-tag">잡아서 옮기기</b></div>
+        <div class="towel drag-item locked step-hidden" id="towel" aria-label="마른 수건"><span>마른 수건</span><b class="tool-tag">좌↔우로 닦기</b></div>
+        <div class="magnifier drag-item locked step-hidden" id="dewMagnifier" aria-label="돋보기"><i></i><b class="tool-tag">캔 위에서 관찰</b></div>
+        <div class="observe-meter" id="dewMeter"><span>관찰 0 / 8초</span><i></i></div>
+        <div class="wipe-meter" id="wipeMeter"><span>닦기 0 / 3회</span><i></i></div>
+        <div class="dew-zoom" id="dewZoom"><div class="zoom-title">🔎 캔 표면 확대</div><div class="zoom-lens" id="zoomLens"><i class="zoom-vapor" style="left:18px;top:18px"></i><i class="zoom-vapor" style="left:62px;top:48px;animation-delay:-1s"></i><i class="zoom-vapor" style="left:120px;top:20px;animation-delay:-2s"></i><i class="zoom-drop" style="left:38px;top:55px;animation-delay:.2s"></i><i class="zoom-drop" style="left:90px;top:48px;animation-delay:.7s"></i><i class="zoom-drop" style="left:135px;top:60px;animation-delay:1.1s"></i></div></div>
+      </div>
+      <div class="notice" id="dewNotice">① 왼쪽의 <b>차가운 캔</b>을 잡아서 가운데 표시된 자리에 옮겨 놓아 보자.</div>
+      <div id="dewQuestion" class="question hidden">
+        <h3>관찰 후 생각하기</h3><p>캔 표면에 생긴 물방울은 어디에서 왔을까?</p>
+        <div class="choices">
+          <button class="choice" data-dew="0">캔 속 음료가 아주 조금씩 새어 나왔다.</button>
+          <button class="choice" data-dew="1">공기 중 수증기가 차가운 캔 표면에서 물방울로 변했다.</button>
+          <button class="choice" data-dew="0">차가운 캔이 스스로 물을 만들어 냈다.</button>
+        </div>
+      </div>
+      <div class="actions"><button class="btn primary" id="toFog" disabled>안개 실험으로 →</button></div>
+    </div>
+  </section>
+
+  <section id="stageFog" class="stage">
+    <div class="card">
+      <span class="pill">실험 2</span><h2>🌫️ 안개 발생 실험</h2>
+      <p class="sub">미지근한 물, 향, 얼음 지퍼백을 <b>직접 집기병으로 옮기며</b> 안개를 만들어 보자.</p>
+      <div class="notice safe">⚠️ 실제 실험에서 향과 점화기를 사용할 때는 반드시 선생님의 안내를 따라야 해. 여기서는 가상 도구를 직접 움직여 체험해.</div>
+      <div class="stepper" id="fogSteps" style="grid-template-columns:repeat(5,1fr)"><div class="step current">① 물 붓기</div><div class="step">② 향 넣었다 빼기</div><div class="step">③ 얼음 올리기</div><div class="step">④ 직접 관찰</div><div class="step">⑤ 까닭 설명</div></div>
+      <div class="gesture-tip">☝️ 도구가 반짝이면 지금 움직일 차례야. 직접 끌어서 알맞은 곳에 놓아 봐!</div>
+      <div class="sim-wrap fog-lab direct-lab" id="fogLab">
+        <div class="sim-title">가상 집기병 · 직접 도구를 움직여 안개 만들기</div>
+        <div class="lab-floor"></div><div class="lab-shadow"></div><div class="cool-zone" id="coolZone"></div>
+        <div class="drop-zone jar-mouth-zone" id="waterZone"><span>물을 이쪽으로</span></div>
+        <div class="drop-zone smoke-zone step-hidden" id="smokeZone"><span>향을 안에 넣었다가 빼기</span></div>
+        <div class="drop-zone ice-zone step-hidden" id="iceZone"><span>얼음 지퍼백 놓기</span></div>
+        <div class="pour-cup drag-item" id="pourCup"><b class="tool-tag">미지근한 물</b></div><div class="water-stream" id="waterStream"></div>
+        <div class="jar" id="jar"><div class="water" id="water"></div><div class="fog" id="fog"></div><div id="fogSpecks"></div></div>
+        <div class="icebag drag-item locked step-hidden" id="icebag"><b class="tool-tag">얼음 지퍼백</b></div>
+        <div class="incense drag-item locked step-hidden" id="incense"><b class="tool-tag">향</b></div>
+        <div class="magnifier fog-mag drag-item locked step-hidden" id="fogMagnifier"><i></i><b class="tool-tag">병 안 관찰</b></div>
+        <div class="observe-meter fog-meter" id="fogMeter"><span>관찰 0 / 5초</span><i></i></div>
+        <div class="temp-column step-hidden" id="tempColumn">위쪽 공기<div class="temp-bar"><i class="temp-dot"></i></div><span>따뜻함 → 차가움</span></div>
+        <div class="fog-note" id="fogNote">아주 작은 물방울이 공기 중에 떠 있어!</div>
+      </div>
+      <div class="notice" id="fogNotice">① <b>미지근한 물이 든 컵</b>을 집기병 입구로 끌어가 놓아 보자.</div>
+      <div id="fogQuestion" class="question hidden">
+        <h3>관찰 후 생각하기</h3><p>집기병 안이 뿌옇게 변한 까닭으로 가장 알맞은 것은?</p>
+        <div class="choices">
+          <button class="choice" data-fog="1">공기 중 수증기가 차가워져 작은 물방울로 변해 공기 중에 떠 있기 때문이다.</button>
+          <button class="choice" data-fog="0">얼음이 녹은 물이 병 전체로 퍼졌기 때문이다.</button>
+          <button class="choice" data-fog="0">향 연기 자체가 물방울로 변했기 때문이다.</button>
+        </div>
+      </div>
+      <div class="actions"><button class="btn primary" id="toCloud" disabled>구름 원리로 →</button></div>
+    </div>
+  </section>
+
+  <section id="stageCloud" class="stage">
+    <div class="card">
+      <span class="pill">연결 탐구</span><h2>☁️ 직접 공기를 올려 구름 만들기</h2>
+      <p class="sub">아래의 <b>따뜻한 공기 덩어리</b>를 손으로 잡고 천천히 높은 하늘까지 끌어 올려 보자. 높이에 따라 온도가 어떻게 달라지는지도 살펴봐.</p>
+      <div class="gesture-tip">☝️ 공기 덩어리를 위·아래로 자유롭게 움직여 봐. 위치에 따라 온도와 구름이 바로 달라져!</div>
+      <div class="sim-wrap cloud-lab direct-lab" id="cloudLab">
+        <div class="sim-title">공기 덩어리의 여행 · 직접 위아래로 움직여 보기</div><div class="sun"></div><div class="mountain"></div>
+        <div class="alt-band band-low"><span>지표면 부근 · 따뜻함</span></div><div class="alt-band band-mid"><span>조금 높은 곳 · 더 차가움</span></div><div class="alt-band band-high"><span>높은 하늘 · 차가움</span></div>
+        <div class="ground-heat"><i class="heat-wave" style="left:10px"></i><i class="heat-wave" style="left:55px;animation-delay:-.7s"></i><i class="heat-wave" style="left:100px;animation-delay:-1.3s"></i></div>
+        <div class="rise-path"></div><div class="rise-arrow ra1">↗</div><div class="rise-arrow ra2">↗</div><div class="rise-arrow ra3">↗</div>
+        <div class="cloudshape" id="cloudshape"></div>
+        <div class="airball drag-item drag-air" id="airball"><span id="airText">따뜻한 공기<br><span style="font-size:13px">24℃</span></span><b class="tool-tag">잡고 위로!</b></div>
+        <div class="altimeter" id="altimeter">지표면 부근 · 24℃</div>
+        <div class="process-strip"><span class="process-chip on" id="chip1">따뜻한 공기</span><span class="process-chip" id="chip2">위로 이동</span><span class="process-chip" id="chip3">기온 낮아짐</span><span class="process-chip" id="chip4">응결·구름</span></div>
+      </div>
+      <div class="actions"><button class="btn ghost" id="resetAir">↺ 공기를 지표면으로</button></div>
+      <div class="notice" id="cloudNotice">따뜻하고 수증기를 포함한 공기 덩어리를 <b>직접 높은 곳으로 끌어 올려</b> 보자.</div>
+      <div class="compare" style="margin-top:16px">
+        <div class="compare-card"><div class="emoji">💧</div><strong>이슬</strong><p>차가운 <b>물체의 표면</b>에 수증기가 응결하여 물방울이 맺혀.</p></div>
+        <div class="compare-card"><div class="emoji">🌫️</div><strong>안개</strong><p><b>지표면 가까운 공기</b>에서 작은 물방울이 떠 있어.</p></div>
+        <div class="compare-card"><div class="emoji">☁️</div><strong>구름</strong><p><b>높은 하늘</b>에서 작은 물방울이나 얼음 알갱이가 떠 있어.</p></div>
+      </div>
+      <div class="actions"><button class="btn primary" id="toQuiz" disabled>마지막 정리 퀴즈 →</button></div>
+    </div>
+  </section>
+
+  <section id="stageQuiz" class="stage">
+    <div class="card">
+      <span class="pill">최종 미션</span><h2>🧠 이슬·안개·구름 정리 퀴즈</h2><p class="sub">모두 풀고 ‘채점하기’를 눌러 보자.</p>
+      <div id="quizArea">
+        <div class="quiz-item"><b>1. 차가운 음료수 캔 겉면의 물방울은 주로 어디에서 온 것일까?</b><div class="choices"><label class="choice"><input type="radio" name="q1" value="a"> 캔 안의 음료</label><label class="choice"><input type="radio" name="q1" value="b"> 공기 중의 수증기</label><label class="choice"><input type="radio" name="q1" value="c"> 책상 위의 물</label></div></div>
+        <div class="quiz-item"><b>2. 이슬이 만들어지는 곳으로 가장 알맞은 것은?</b><div class="choices"><label class="choice"><input type="radio" name="q2" value="a"> 차가워진 물체의 표면</label><label class="choice"><input type="radio" name="q2" value="b"> 높은 하늘에서만</label><label class="choice"><input type="radio" name="q2" value="c"> 땅속 깊은 곳</label></div></div>
+        <div class="quiz-item"><b>3. 안개와 구름의 가장 중요한 공통점은?</b><div class="choices"><label class="choice"><input type="radio" name="q3" value="a"> 항상 비가 내린다</label><label class="choice"><input type="radio" name="q3" value="b"> 수증기가 응결해 생긴 작은 물방울과 관련 있다</label><label class="choice"><input type="radio" name="q3" value="c"> 반드시 밤에만 생긴다</label></div></div>
+        <div class="quiz-item"><b>4. 안개와 구름의 차이로 가장 알맞은 것은?</b><div class="choices"><label class="choice"><input type="radio" name="q4" value="a"> 물방울의 색</label><label class="choice"><input type="radio" name="q4" value="b"> 생기는 위치</label><label class="choice"><input type="radio" name="q4" value="c"> 물의 종류</label></div></div>
+        <div class="quiz-item"><b>5. 수증기가 작은 물방울로 변하는 현상을 무엇이라고 할까?</b><div class="choices"><label class="choice"><input type="radio" name="q5" value="a"> 증발</label><label class="choice"><input type="radio" name="q5" value="b"> 응결</label><label class="choice"><input type="radio" name="q5" value="c"> 끓음</label></div></div>
+      </div>
+      <div class="actions"><button class="btn primary" id="gradeBtn">채점하기</button></div>
+      <div id="result" class="resultbox hidden" style="margin-top:18px">
+        <div class="stars" id="stars">★★★★★</div><div class="score"><span id="scoreNum">0</span>/5</div><h3 id="resultTitle">탐구 완료!</h3><p id="resultText" class="sub"></p>
+        <div class="actions"><button class="btn mint" id="copyResult">결과 카드 내용 복사</button><button class="btn ghost" id="retryQuiz">퀴즈 다시 풀기</button><button class="btn danger" id="resetAll">처음부터 다시</button></div>
+      </div>
+    </div>
+    <p class="footer-note">경기초 5학년 과학실험 · 이슬·안개·구름 알아보기<br>가상 실험은 실제 실험 전·후 관찰과 개념 정리를 돕기 위한 활동입니다.</p>
+  </section>
+</main>
+<div class="toast" id="toast">저장했어!</div>
+<script>
+(() => {
+  const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+  const stages=['stageStart','stageDew','stageFog','stageCloud','stageQuiz'];
+  let current=0, dewStep=0, fogStep=0, dewAnswered=false, fogAnswered=false, cloudDone=false;
+  const stateKey='gyeonggiScienceDewFogCloudV7';
+  const STEP_PAUSE=1300;
+  const profile={className:'',studentNo:'',studentName:''};
+
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+  function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('on'),1800)}
+  function showStage(n){current=clamp(n,0,4);stages.forEach((id,i)=>$('#'+id).classList.toggle('active',i===current));$('#progressBar').style.width=(current*25)+'%';window.scrollTo({top:0,behavior:'smooth'});save();if(current===1)setTimeout(syncDew,80);if(current===2)setTimeout(syncFog,80);if(current===3)setTimeout(syncCloud,80)}
+  function save(){profile.className=$('#className').value;profile.studentNo=$('#studentNo').value;profile.studentName=$('#studentName').value;localStorage.setItem(stateKey,JSON.stringify({current,dewStep,fogStep,dewAnswered,fogAnswered,cloudDone,profile}))}
+  function restore(){try{const d=JSON.parse(localStorage.getItem(stateKey)||'null');if(!d)return false;Object.assign(profile,d.profile||{});$('#className').value=profile.className||'';$('#studentNo').value=profile.studentNo||'';$('#studentName').value=profile.studentName||'';dewStep=d.dewStep||0;fogStep=d.fogStep||0;dewAnswered=!!d.dewAnswered;fogAnswered=!!d.fogAnswered;cloudDone=!!d.cloudDone;current=d.current||0;return true}catch(e){return false}}
+  function updateSteps(sel,index){$$(sel+' .step').forEach((el,i)=>{el.classList.toggle('done',i<index);el.classList.toggle('current',i===index)})}
+  function overlap(a,b,pad=0){const A=a.getBoundingClientRect(),B=b.getBoundingClientRect();return A.right-pad>B.left+pad&&A.left+pad<B.right-pad&&A.bottom-pad>B.top+pad&&A.top+pad<B.bottom-pad}
+  function snapCenter(el,target,dy=0){const lab=el.offsetParent,lb=lab.getBoundingClientRect(),tb=target.getBoundingClientRect();el.style.left=(tb.left-lb.left+tb.width/2-el.offsetWidth/2)+'px';el.style.top=(tb.top-lb.top+tb.height/2-el.offsetHeight/2+dy)+'px';el.style.right='auto';el.style.bottom='auto';el.style.transform='none'}
+  function setReady(el,on){el.classList.toggle('locked',!on);el.classList.toggle('ready',on)}
+  function setStepVisible(el,on){if(!el)return;el.classList.toggle('step-hidden',!on);if(!on){el.classList.remove('ready','dragging')}}
+  function resetToolPosition(el){el.style.left='';el.style.top='';el.style.right='';el.style.bottom='';el.style.transform=''}
+  function placeIcebagOnJar(){
+    const bag=$('#icebag'),jar=$('#jar'),lab=$('#fogLab');
+    if(!bag||!jar||!lab)return;
+    const lr=lab.getBoundingClientRect(),jr=jar.getBoundingClientRect();
+    const left=jr.left-lr.left+jr.width/2-bag.offsetWidth/2;
+    // 지퍼백이 집기병 입구를 '덮듯이' 걸치도록 아래쪽 약 1/3이 병 입구와 겹치게 배치
+    const top=jr.top-lr.top-bag.offsetHeight*0.64;
+    bag.style.left=left+'px';bag.style.top=top+'px';bag.style.right='auto';bag.style.bottom='auto';bag.style.transform='none';
+  }
+
+  function makeDraggable(el,lab,hooks={}){
+    let dragging=false,dx=0,dy=0;
+    const start=(e)=>{if(el.classList.contains('locked'))return;e.preventDefault();dragging=true;el.classList.add('dragging');el.setPointerCapture?.(e.pointerId);const er=el.getBoundingClientRect(),lr=lab.getBoundingClientRect();el.style.left=(er.left-lr.left)+'px';el.style.top=(er.top-lr.top)+'px';el.style.right='auto';el.style.bottom='auto';el.style.transform='none';dx=e.clientX-er.left;dy=e.clientY-er.top;hooks.onStart?.(e)};
+    const move=(e)=>{if(!dragging)return;e.preventDefault();const lr=lab.getBoundingClientRect();let x=e.clientX-lr.left-dx,y=e.clientY-lr.top-dy;x=clamp(x,0,lab.clientWidth-el.offsetWidth);y=clamp(y,0,lab.clientHeight-el.offsetHeight);el.style.left=x+'px';el.style.top=y+'px';hooks.onMove?.(e)};
+    const end=(e)=>{if(!dragging)return;dragging=false;el.classList.remove('dragging');hooks.onEnd?.(e)};
+    el.addEventListener('pointerdown',start);el.addEventListener('pointermove',move);el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
+    return {isDragging:()=>dragging};
+  }
+
+  // ---------- 공통 입자 ----------
+  function addVapor(container,count=28){container.innerHTML='';for(let i=0;i<count;i++){const v=document.createElement('i');v.className='vapor';v.style.left=(4+Math.random()*92)+'%';v.style.top=(90+Math.random()*300)+'px';v.style.animationDelay=(-Math.random()*4)+'s';v.style.animationDuration=(3+Math.random()*3)+'s';container.appendChild(v)}}
+  addVapor($('#dewParticles'),32);
+  for(let i=0;i<9;i++){const l=document.createElement('i');l.className='cold-line';l.style.left=(5+i*12)+'%';l.style.top=(i%2?8:-2)+'px';l.style.animationDelay=(-Math.random()*2)+'s';$('#coldLines').appendChild(l)}
+  function makeDropAt(x,y){const d=document.createElement('i');d.className='drop';d.style.left=x+'%';d.style.top=y+'%';d.style.scale=(.7+Math.random()*.7);$('#can').appendChild(d)}
+  function launchCondensationWave(total=7){const lab=$('#dewLab'),can=$('#can'),layer=$('#dewParticles'),lb=lab.getBoundingClientRect(),cb=can.getBoundingClientRect();for(let i=0;i<total;i++){setTimeout(()=>{const v=document.createElement('i');v.className='vapor travel';layer.appendChild(v);const side=Math.random()<.5?-1:1,sx=(cb.left-lb.left)+(side<0?-45-Math.random()*75:cb.width+35+Math.random()*75),sy=(cb.top-lb.top)+20+Math.random()*(cb.height-40),tx=(cb.left-lb.left)+15+Math.random()*(cb.width-30),ty=(cb.top-lb.top)+15+Math.random()*(cb.height-30);v.style.left=sx+'px';v.style.top=sy+'px';const a=v.animate([{transform:'translate(0,0) scale(.8)',opacity:.25},{opacity:.95,offset:.55},{transform:`translate(${tx-sx}px,${ty-sy}px) scale(.3)`,opacity:.06}],{duration:800+Math.random()*500,easing:'ease-out',fill:'forwards'});a.onfinish=()=>{v.remove();makeDropAt(8+Math.random()*82,10+Math.random()*78)}},i*80)}}
+
+  // ---------- 이슬: 캔 옮기기 → 직접 닦기 → 돋보기 8초 ----------
+  let wipePasses=0,lastWipeSide=0,dewObserveElapsed=0,dewWatch=null,dewBusy=false;
+  const dewLab=$('#dewLab'),can=$('#can'),towel=$('#towel'),dewMag=$('#dewMagnifier');
+  function updateWipeMeter(){const m=$('#wipeMeter');m.classList.toggle('on',dewStep===1);m.querySelector('span').textContent=`닦기 ${Math.min(wipePasses,3)} / 3회`;m.querySelector('i').style.width=(Math.min(wipePasses,3)/3*100)+'%'}
+  function updateDewMeter(){const sec=Math.min(8,Math.floor(dewObserveElapsed/1000));const m=$('#dewMeter');m.classList.toggle('on',dewStep===2);m.querySelector('span').textContent=`관찰 ${sec} / 8초`;m.querySelector('i').style.width=(Math.min(dewObserveElapsed,8000)/8000*100)+'%'}
+  function completeWipe(){
+    if(dewStep>=2||dewBusy)return;
+    dewBusy=true;setReady(towel,false);can.classList.remove('wipe-hit');
+    $('#dewNotice').innerHTML='✅ 캔 표면을 충분히 닦았어! <b>마른 표면</b>을 잠깐 확인해 보자.';
+    updateWipeMeter();toast('잘 닦았어! 잠깐 관찰해 보자.');
+    setTimeout(()=>{dewStep=2;dewBusy=false;resetToolPosition(towel);$('#can').querySelectorAll('.drop').forEach(e=>e.remove());$('#dewZoom').classList.remove('on');$('#dewNotice').innerHTML='③ 이제 <b>돋보기</b>를 잡고 캔 표면 위에서 이리저리 움직이며 <b>8초 동안</b> 관찰해 보자.';syncDew();save()},STEP_PAUSE);
+  }
+  function finishDewObservation(){
+    if(dewStep>=3||dewBusy)return;
+    dewBusy=true;clearInterval(dewWatch);dewWatch=null;setReady(dewMag,false);$('#dewZoom').classList.add('on');launchCondensationWave(10);updateDewMeter();
+    $('#dewNotice').innerHTML='💧 관찰 완료! 캔 표면에 생긴 <b>작은 물방울</b>을 잠깐 살펴보자.';
+    setTimeout(()=>{dewStep=3;dewBusy=false;resetToolPosition(dewMag);$('#dewQuestion').classList.remove('hidden');$('#dewNotice').innerHTML='💧 캔 표면에 작은 물방울이 생겼어! 파란 입자로 표현한 <b>공기 중 수증기</b>가 차가운 표면에서 물방울로 변한 거야.';syncDew();save()},STEP_PAUSE);
+  }
+  function startDewWatch(){clearInterval(dewWatch);dewWatch=setInterval(()=>{if(dewStep!==2)return;if(overlap(dewMag,can,18)){dewObserveElapsed+=200;if(Math.floor(dewObserveElapsed/1000)!==Math.floor((dewObserveElapsed-200)/1000))launchCondensationWave(5);if(dewObserveElapsed>=3500)$('#dewZoom').classList.add('on');updateDewMeter();if(dewObserveElapsed>=8000)finishDewObservation()}},200)}
+  function syncDew(){updateSteps('#dewSteps',Math.min(dewStep,3));$('#toFog').disabled=!dewAnswered;can.classList.toggle('placed',dewStep>=1);$('#dewLab').classList.toggle('chilled',dewStep>=1);$('#canZone').classList.toggle('done',dewStep>=1);setStepVisible($('#canZone'),dewStep===0);setStepVisible(can,true);setStepVisible(towel,dewStep===1);setStepVisible(dewMag,dewStep===2);setReady(can,dewStep===0&&!dewBusy);setReady(towel,dewStep===1&&!dewBusy);setReady(dewMag,dewStep===2&&!dewBusy);if(dewStep>=1&&!can.classList.contains('dragging'))snapCenter(can,$('#canZone'));if(dewStep>=3){$('#dewQuestion').classList.remove('hidden');$('#dewZoom').classList.add('on');if(!can.querySelector('.drop'))for(let i=0;i<28;i++)makeDropAt(8+Math.random()*82,10+Math.random()*78)}updateWipeMeter();updateDewMeter()}
+  makeDraggable(can,dewLab,{onMove:()=>{if(!dewBusy)$('#canZone').classList.toggle('hot',overlap(can,$('#canZone'),15))},onEnd:()=>{const ok=overlap(can,$('#canZone'),15);$('#canZone').classList.remove('hot');if(ok&&dewStep===0&&!dewBusy){dewBusy=true;snapCenter(can,$('#canZone'));can.classList.add('placed');setReady(can,false);$('#dewNotice').innerHTML='✅ 차가운 캔을 준비했어! <b>차가운 캔의 표면</b>을 잠깐 살펴보자.';toast('차가운 캔 준비 완료!');setTimeout(()=>{dewStep=1;dewBusy=false;$('#dewNotice').innerHTML='② 이제 오른쪽의 <b>마른 수건</b>을 잡고 캔 표면을 <b>좌우로 3번 이상</b> 직접 닦아 보자.';syncDew();save()},STEP_PAUSE)}else if(dewStep===0&&!dewBusy){toast('점선 자리 안에 캔을 놓아 줘!')}}});
+  makeDraggable(towel,dewLab,{onMove:()=>{if(dewStep!==1)return;const hit=overlap(towel,can,20);can.classList.toggle('wipe-hit',hit);if(hit){const tr=towel.getBoundingClientRect(),cr=can.getBoundingClientRect(),d=(tr.left+tr.width/2)-(cr.left+cr.width/2),side=d<-22?-1:d>22?1:0;if(side&&lastWipeSide&&side!==lastWipeSide){wipePasses++;updateWipeMeter();if(wipePasses>=3)completeWipe()}if(side)lastWipeSide=side}},onEnd:()=>can.classList.remove('wipe-hit')});
+  makeDraggable(dewMag,dewLab,{onStart:()=>{if(dewStep===2)startDewWatch()},onMove:()=>{if(dewStep===2)can.classList.toggle('inspect-hit',overlap(dewMag,can,18))},onEnd:()=>{can.classList.remove('inspect-hit');clearInterval(dewWatch);dewWatch=null}});
+  $$('[data-dew]').forEach(b=>b.onclick=()=>{if(dewAnswered)return;const ok=b.dataset.dew==='1';b.classList.add(ok?'correct':'wrong');if(ok){dewAnswered=true;dewStep=4;$('#dewNotice').innerHTML='정답! 공기 중 <b>수증기</b>가 차가운 캔 표면에서 차가워져 <b>물방울로 응결</b>한 것이 이슬이 생기는 원리야.';$('#toFog').disabled=false;updateSteps('#dewSteps',4);save()}else toast('한 번 더 생각해 보자!')});
+
+  // ---------- 안개: 물 붓기 → 향 넣었다 빼기 → 얼음 올리기 → 돋보기 5초 ----------
+  for(let i=0;i<6;i++){const ice=document.createElement('i');ice.className='ice';ice.style.left=(12+i*31)+'px';ice.style.top=(10+(i%2)*20)+'px';ice.style.setProperty('--r',(-18+Math.random()*36)+'deg');$('#icebag').appendChild(ice)}
+  function addSmokeParticles(){const jar=$('#jar');jar.querySelectorAll('.smoke').forEach(e=>e.remove());for(let i=0;i<18;i++){const q=document.createElement('i');q.className='smoke';q.style.left=(20+Math.random()*160)+'px';q.style.top=(80+Math.random()*130)+'px';q.style.animationDelay=(-Math.random()*2.5)+'s';jar.appendChild(q)}}
+  function addWarmVapor(){const jar=$('#jar');jar.querySelectorAll('.warm-vapor').forEach(e=>e.remove());for(let i=0;i<12;i++){const q=document.createElement('i');q.className='warm-vapor';q.style.left=(25+Math.random()*145)+'px';q.style.bottom=(50+Math.random()*12)+'px';q.style.animationDelay=(-Math.random()*3)+'s';jar.appendChild(q)}}
+  function makeFogSpecks(count=58){const host=$('#fogSpecks');host.innerHTML='';for(let i=0;i<count;i++){const d=document.createElement('i');d.className='fog-speck';const size=2+Math.random()*6;d.style.width=size+'px';d.style.height=size+'px';d.style.left=(8+Math.random()*84)+'%';d.style.top=(8+Math.random()*66)+'%';host.appendChild(d);d.animate([{opacity:0,transform:'scale(.2)'},{opacity:.7,transform:'scale(1)',offset:.25},{opacity:.4,transform:`translate(${-15+Math.random()*30}px,${-12+Math.random()*24}px)`},{opacity:.75,transform:'translate(0,0)'}],{duration:2400+Math.random()*2400,delay:Math.random()*1000,iterations:Infinity,direction:'alternate',easing:'ease-in-out'})}}
+  let incenseVisited=false,fogObserveElapsed=0,fogWatch=null,fogBusy=false,fogObserveTouched=false;
+  const fogLab=$('#fogLab'),cup=$('#pourCup'),incense=$('#incense'),icebag=$('#icebag'),fogMag=$('#fogMagnifier');
+  function updateFogMeter(){const sec=Math.min(5,Math.floor(fogObserveElapsed/1000)),m=$('#fogMeter');m.classList.toggle('on',fogStep===3);m.querySelector('span').textContent=`관찰 ${sec} / 5초`;m.querySelector('i').style.width=(Math.min(fogObserveElapsed,5000)/5000*100)+'%'}
+  function finishFogObservation(){
+    if(fogStep>=4||fogBusy)return;
+    fogBusy=true;clearInterval(fogWatch);fogWatch=null;setReady(fogMag,false);$('#fog').classList.add('on');makeFogSpecks(68);$('#fogNote').classList.add('on');fogObserveElapsed=5000;updateFogMeter();
+    $('#fogNotice').innerHTML='✅ 5초 관찰 완료! 집기병 안의 <b>뿌연 모습과 작은 물방울</b>을 잠깐 더 살펴보자.';
+    setTimeout(()=>{fogStep=4;fogBusy=false;resetToolPosition(fogMag);$('#fogQuestion').classList.remove('hidden');$('#fogNotice').innerHTML='🌫️ 집기병 안이 뿌옇게 변했어. 화면 속 반짝이는 작은 점들은 공기 중에 떠 있는 <b>아주 작은 물방울</b>을 나타내.';syncFog();save()},STEP_PAUSE);
+  }
+  function startFogWatch(){
+    if(fogWatch||fogStep!==3)return;
+    fogWatch=setInterval(()=>{
+      if(fogStep!==3||fogBusy)return;
+      if(fogObserveTouched&&overlap(fogMag,$('#jar'),10)){
+        fogObserveElapsed=Math.min(5000,fogObserveElapsed+200);
+        if(fogObserveElapsed%1000<220){$('#fog').classList.add('on');makeFogSpecks(18+Math.floor(fogObserveElapsed/150))}
+        updateFogMeter();
+        if(fogObserveElapsed>=5000)finishFogObservation();
+      }
+    },200);
+  }
+  function syncFog(){updateSteps('#fogSteps',Math.min(fogStep,4));$('#toCloud').disabled=!fogAnswered;$('#water').classList.toggle('on',fogStep>=1);$('#coolZone').classList.toggle('on',fogStep>=3);$('#tempColumn').classList.toggle('cool',fogStep>=3);$('#waterZone').classList.toggle('done',fogStep>=1);$('#smokeZone').classList.toggle('done',fogStep>=2);$('#iceZone').classList.toggle('done',fogStep>=3);setStepVisible($('#waterZone'),fogStep===0);setStepVisible($('#smokeZone'),fogStep===1);setStepVisible($('#iceZone'),fogStep===2);setStepVisible(cup,fogStep===0);setStepVisible(incense,fogStep===1);setStepVisible(icebag,fogStep>=2);setStepVisible(fogMag,fogStep===3);setStepVisible($('#tempColumn'),fogStep>=3);setReady(cup,fogStep===0&&!fogBusy);setReady(incense,fogStep===1&&!fogBusy);setReady(icebag,fogStep===2&&!fogBusy);setReady(fogMag,fogStep===3&&!fogBusy);if(fogStep>=1)addWarmVapor();if(fogStep>=2)addSmokeParticles();if(fogStep>=3&&!icebag.classList.contains('dragging')){placeIcebagOnJar();icebag.classList.add('placed')}if(fogStep===3)startFogWatch();if(fogStep>=4){$('#fog').classList.add('on');if(!$('#fogSpecks').children.length)makeFogSpecks(68);$('#fogNote').classList.add('on');$('#fogQuestion').classList.remove('hidden')}updateFogMeter()}
+  makeDraggable(cup,fogLab,{onMove:()=>{if(!fogBusy)$('#waterZone').classList.toggle('hot',overlap(cup,$('#waterZone'),10))},onEnd:()=>{const ok=overlap(cup,$('#waterZone'),10);$('#waterZone').classList.remove('hot');if(ok&&fogStep===0&&!fogBusy){fogBusy=true;snapCenter(cup,$('#waterZone'),-20);setReady(cup,false);cup.classList.add('pour');$('#waterStream').classList.add('on');$('#fogNotice').innerHTML='💧 미지근한 물을 붓고 있어. 물이 들어가는 모습을 잠깐 살펴보자.';setTimeout(()=>{$('#water').classList.add('on');addWarmVapor();cup.classList.remove('pour');$('#waterStream').classList.remove('on');$('#fogNotice').innerHTML='✅ 미지근한 물이 들어갔어! 병 안의 변화를 잠깐 보고 다음 도구를 준비하자.';setTimeout(()=>{resetToolPosition(cup);fogStep=1;fogBusy=false;$('#fogNotice').innerHTML='② 이제 <b>향</b>을 잡아 집기병 안쪽으로 넣었다가 다시 밖으로 빼 보자.';syncFog();save()},STEP_PAUSE)},700)}else if(fogStep===0&&!fogBusy)toast('컵을 집기병 입구 쪽에 놓아 줘!')}});
+  makeDraggable(incense,fogLab,{onMove:()=>{if(fogStep!==1||fogBusy)return;const hit=overlap(incense,$('#smokeZone'),18);$('#smokeZone').classList.toggle('hot',hit);if(hit){incenseVisited=true;addSmokeParticles()}else if(incenseVisited){fogBusy=true;incenseVisited=false;setReady(incense,false);$('#smokeZone').classList.remove('hot');$('#fogNotice').innerHTML='✅ 향을 넣었다가 뺐어! 병 안에 퍼지는 <b>향 연기</b>를 잠깐 관찰해 보자.';toast('향 연기 넣기 완료!');setTimeout(()=>{resetToolPosition(incense);fogStep=2;fogBusy=false;$('#fogNotice').innerHTML='③ 이제 <b>얼음 지퍼백</b>을 잡아 집기병 위에 정확히 올려 보자.';syncFog();save()},STEP_PAUSE)}},onEnd:()=>{$('#smokeZone').classList.remove('hot');if(fogStep===1&&incenseVisited&&!fogBusy)toast('향을 다시 병 밖으로 빼 줘!')}});
+  makeDraggable(icebag,fogLab,{onMove:()=>{if(!fogBusy)$('#iceZone').classList.toggle('hot',overlap(icebag,$('#iceZone'),8))},onEnd:()=>{const ok=overlap(icebag,$('#iceZone'),8);$('#iceZone').classList.remove('hot');if(ok&&fogStep===2&&!fogBusy){fogBusy=true;placeIcebagOnJar();icebag.classList.add('placed');setReady(icebag,false);$('#coolZone').classList.add('on');$('#tempColumn').classList.add('cool');$('#fogNotice').innerHTML='🧊 얼음 지퍼백을 올렸어! 위쪽 공기가 <b>차가워지는 모습</b>을 잠깐 살펴보자.';toast('얼음 지퍼백을 올렸어!');setTimeout(()=>{fogStep=3;fogBusy=false;fogObserveElapsed=0;fogObserveTouched=false;$('#fogNotice').innerHTML='④ 이제 <b>돋보기</b>를 병 위로 옮겨 놓아 보자. 병 위에 두면 <b>5초 관찰</b>이 이어서 진행돼.';syncFog();save()},STEP_PAUSE+300)}else if(fogStep===2&&!fogBusy)toast('집기병 위 점선 자리에 올려 줘!')}});
+  makeDraggable(fogMag,fogLab,{onStart:()=>{if(fogStep===3&&!fogBusy){fogObserveTouched=true;startFogWatch();$('#fogNotice').innerHTML='🔎 좋아! 돋보기를 <b>집기병 위에 두고</b> 5초 동안 변화를 관찰해 보자.'}},onMove:()=>{if(fogStep===3&&!fogBusy){fogObserveTouched=true;startFogWatch()}},onEnd:()=>{if(fogStep===3&&!fogBusy){startFogWatch();if(overlap(fogMag,$('#jar'),10))toast('좋아! 병 위에 두면 관찰이 계속돼.');else toast('돋보기를 집기병 위에 놓아 줘!')}}});
+  $$('[data-fog]').forEach(b=>b.onclick=()=>{if(fogAnswered)return;const ok=b.dataset.fog==='1';b.classList.add(ok?'correct':'wrong');if(ok){fogAnswered=true;fogStep=5;$('#fogNotice').innerHTML='정답! 공기 중 수증기가 차가워져 <b>작은 물방울로 응결</b>하고, 그 물방울들이 공기 중에 떠 있어서 안개처럼 보이는 거야.';$('#toCloud').disabled=false;updateSteps('#fogSteps',5);save()}else toast('힌트: 뿌연 모습은 아주 작은 물방울과 관련 있어!')});
+
+  window.addEventListener('resize',()=>{if(fogStep>=3&&!icebag.classList.contains('dragging'))requestAnimationFrame(placeIcebagOnJar)});
+
+  // ---------- 구름: 공기 덩어리를 직접 위·아래로 ----------
+  for(let i=0;i<13;i++){const v=document.createElement('i');v.className='micro-vapor';v.style.left=(12+Math.random()*78)+'%';v.style.top=(12+Math.random()*72)+'%';v.style.animationDelay=(-Math.random()*2)+'s';$('#airball').appendChild(v)}
+  for(let i=0;i<26;i++){const d=document.createElement('i');d.className='cloud-droplet';d.style.left=(5+Math.random()*115)+'%';d.style.top=(-22+Math.random()*105)+'%';d.style.animationDelay=(Math.random()*900)+'ms';$('#cloudshape').appendChild(d)}
+  function setChips(n){for(let i=1;i<=4;i++)$('#chip'+i).classList.toggle('on',i<=n)}
+  const cloudLab=$('#cloudLab'),airball=$('#airball');
+  function cloudFromPosition(){const lr=cloudLab.getBoundingClientRect(),br=airball.getBoundingClientRect(),cy=br.top-lr.top+br.height/2,ground=cloudLab.clientHeight-105,high=115,ratio=clamp((ground-cy)/(ground-high),0,1),temp=Math.round(24-12*ratio);$('#airText').innerHTML=`${ratio>.55?'차가워지는 공기':'따뜻한 공기'}<br><span style="font-size:13px">${temp}℃</span>`;$('#altimeter').textContent=`높이 ${Math.round(ratio*100)}% · 약 ${temp}℃`;const chip=ratio<.14?1:ratio<.42?2:ratio<.72?3:4;setChips(chip);airball.classList.toggle('cooling',ratio>.45);$('#cloudshape').classList.toggle('on',ratio>.72);if(ratio<.15)$('#cloudNotice').innerHTML='🌡️ 지표면 가까이는 비교적 따뜻해. 공기 덩어리를 더 위로 끌어 올려 보자.';else if(ratio<.45)$('#cloudNotice').innerHTML='⬆️ 공기가 위로 올라가고 있어. 높아질수록 온도가 조금씩 낮아지는 것을 확인해 봐.';else if(ratio<.72)$('#cloudNotice').innerHTML='❄️ 공기가 더 차가워졌어. 수증기가 작은 물방울로 바뀌기 좋은 상태가 되고 있어.';else $('#cloudNotice').innerHTML='☁️ 높은 곳에서 공기가 차가워지자 수증기가 <b>작은 물방울로 응결</b>해 구름이 만들어졌어!';if(ratio>.82&&!cloudDone){cloudDone=true;$('#toQuiz').disabled=false;toast('구름 만들기 성공!');save()}return ratio}
+  function resetAirPosition(){if(cloudLab.clientWidth<100)return;airball.dataset.positioned='1';airball.style.left=Math.max(20,cloudLab.clientWidth*.10)+'px';airball.style.top=(cloudLab.clientHeight-airball.offsetHeight-62)+'px';airball.style.bottom='auto';airball.style.right='auto';airball.style.transform='none';airball.classList.remove('cooling');$('#cloudshape').classList.remove('on');setChips(1);$('#airText').innerHTML='따뜻한 공기<br><span style="font-size:13px">24℃</span>';$('#altimeter').textContent='지표면 부근 · 24℃'}
+  function syncCloud(){if(cloudLab.clientWidth<100)return;if(!airball.dataset.positioned)resetAirPosition();$('#toQuiz').disabled=!cloudDone;if(cloudDone){$('#cloudNotice').innerHTML='구름 만들기에 성공했어! 공기 덩어리를 다시 위·아래로 움직여 <b>온도와 구름의 변화</b>를 비교해 봐.'}}
+  makeDraggable(airball,cloudLab,{onMove:cloudFromPosition,onEnd:()=>{cloudFromPosition();save()}});
+  $('#resetAir').onclick=()=>{resetAirPosition();cloudFromPosition();$('#cloudNotice').innerHTML='따뜻하고 수증기를 포함한 공기 덩어리를 다시 <b>직접 높은 곳으로 끌어 올려</b> 보자.'};
+
+  // ---------- 화면 이동 / 퀴즈 ----------
+  $('#startBtn').onclick=()=>{save();showStage(1)};
+  $('#resumeBtn').onclick=()=>{if(restore()){showStage(Math.max(1,current));toast('저장된 곳에서 이어갈게!')}else toast('아직 저장된 실험이 없어!')};
+  $('#toFog').onclick=()=>showStage(2);$('#toCloud').onclick=()=>showStage(3);$('#toQuiz').onclick=()=>showStage(4);$('#homeBtn').onclick=()=>showStage(0);
+  function grade(){const key={q1:'b',q2:'a',q3:'b',q4:'b',q5:'b'};let score=0,complete=true;Object.entries(key).forEach(([q,a])=>{const checked=document.querySelector(`input[name="${q}"]:checked`);if(!checked)complete=false;else if(checked.value===a)score++});if(!complete){toast('5문제를 모두 골라 줘!');return}$('#scoreNum').textContent=score;$('#stars').textContent='★'.repeat(score)+'☆'.repeat(5-score);$('#resultTitle').textContent=score===5?'완벽한 과학 탐구자! 🎉':score>=4?'아주 잘했어! 👏':score>=3?'좋아, 핵심을 다시 확인해 보자!':'실험 장면을 한 번 더 떠올려 보자!';$('#resultText').innerHTML=`${profile.className||'5학년'} ${profile.studentNo?profile.studentNo+'번 ':''}${profile.studentName||'탐구자'}의 점수는 <b>${score}점 / 5점</b>이야.<br><br><b>핵심:</b> 공기 중 수증기가 차가워지면 작은 물방울로 응결할 수 있어.`;$('#result').classList.remove('hidden');$('#progressBar').style.width='100%';save();$('#result').scrollIntoView({behavior:'smooth',block:'start'})}
+  $('#gradeBtn').onclick=grade;
+  $('#retryQuiz').onclick=()=>{$$('input[type="radio"]').forEach(r=>r.checked=false);$('#result').classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'})};
+  $('#copyResult').onclick=async()=>{const text=`[경기초 5학년 과학실험 결과]
+반: ${profile.className||'-'} / 번호: ${profile.studentNo||'-'} / 이름: ${profile.studentName||'-'}
+점수: ${$('#scoreNum').textContent}/5
+
+핵심 정리: 공기 중 수증기가 차가워지면 작은 물방울로 응결할 수 있다. 이슬은 물체 표면에, 안개는 지표면 가까이에, 구름은 높은 하늘에 나타난다.`;try{await navigator.clipboard.writeText(text);toast('결과 카드 내용을 복사했어!')}catch(e){prompt('아래 내용을 복사해 줘.',text)}};
+  $('#resetAll').onclick=()=>{if(confirm('실험 진행 상황을 모두 지우고 처음으로 돌아갈까?')){localStorage.removeItem(stateKey);location.reload()}};
+
+  try{const d=JSON.parse(localStorage.getItem(stateKey)||'null');if(d&&d.profile){$('#className').value=d.profile.className||'';$('#studentNo').value=d.profile.studentNo||'';$('#studentName').value=d.profile.studentName||''}}catch(e){}
+  syncDew();syncFog();syncCloud();
+})();
+</script>
+</body>
+</html>
