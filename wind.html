@@ -30,6 +30,8 @@ h1{font-size:clamp(30px,6vw,52px);margin:16px 0 8px;letter-spacing:-2px}
 .profile{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:10px;margin:22px auto;max-width:560px}
 .profile input{width:100%;border:1.5px solid #cde4f2;border-radius:15px;padding:14px;background:white;text-align:center;font-weight:800;color:var(--ink);outline:0}
 .profile input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(31,136,214,.1)}
+.profile input.invalid{border-color:#e36c63!important;background:#fff7f6!important;box-shadow:0 0 0 4px rgba(227,108,99,.11)!important}
+.profile-error{display:none;max-width:560px;margin:-10px auto 16px;padding:10px 12px;border-radius:13px;background:#fff2ef;border:1px solid #efbeb8;color:#a54037;font-size:13px;font-weight:900}.profile-error.show{display:block}
 .primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-radius:17px;padding:15px 26px;font-weight:900;font-size:17px;box-shadow:0 10px 22px rgba(31,136,214,.25)}
 .primary:active{transform:translateY(1px)}
 .hero-visual{height:150px;position:relative;margin:14px auto 8px;max-width:560px;overflow:hidden;border-radius:24px;background:linear-gradient(#d6f3ff 0 65%,#f2d4a5 65%)}
@@ -72,7 +74,7 @@ h1{font-size:clamp(30px,6vw,52px);margin:16px 0 8px;letter-spacing:-2px}
 .tool:active{cursor:grabbing}.tool.locked{cursor:default}
 .tool-hint{position:absolute;left:50%;transform:translateX(-50%);bottom:-25px;background:#fff;border:1px solid #d7e9f2;padding:4px 8px;border-radius:99px;font-size:10px;font-weight:900;white-space:nowrap;color:#547287;box-shadow:0 5px 10px rgba(0,0,0,.06)}
 .bowl{width:132px;height:85px;border:4px solid #607d8b;border-top:2px solid #86a4b2;border-radius:5px 5px 24px 24px;overflow:hidden;background:rgba(255,255,255,.5)}
-.bowl .fill{position:absolute;left:4px;right:4px;bottom:4px;height:62px;border-radius:0 0 18px 18px}.bowl .label{position:absolute;left:50%;top:31px;transform:translateX(-50%);font-size:18px;font-weight:950;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+.bowl .fill{position:absolute;left:4px;right:4px;bottom:4px;height:62px;border-radius:0 0 18px 18px}.bowl .label{position:absolute;left:50%;top:31px;transform:translateX(-50%);font-size:18px;font-weight:950;text-shadow:0 1px 0 rgba(255,255,255,.6);white-space:nowrap;word-break:keep-all;overflow-wrap:normal;text-align:center}
 .water .fill{background:linear-gradient(#95deff 0 10%,#39ace9 11%)}.water .label{color:#0d69a1}
 .sand .fill{background:linear-gradient(#f1d08f,#d39a4c)}.sand .label{color:#76531e}
 .incense{width:78px;height:92px}.clay{position:absolute;left:12px;bottom:0;width:54px;height:27px;border-radius:50% 50% 30% 30%;background:#6f88a0}.stick{position:absolute;left:37px;bottom:18px;width:5px;height:65px;background:#6d462c;border-radius:4px}.ember{position:absolute;left:35px;top:3px;width:9px;height:9px;border-radius:50%;background:#e84628;box-shadow:0 0 11px #ffb13b;display:none}
@@ -99,6 +101,7 @@ h1{font-size:clamp(30px,6vw,52px);margin:16px 0 8px;letter-spacing:-2px}
 
 .question{margin-top:15px;border:1px solid #dceef7;border-radius:18px;padding:17px;background:#fbfeff}.question h3{margin:0 0 12px;font-size:17px}.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.choice{padding:13px;border-radius:14px;background:#eff8fd;color:#335e76;font-weight:850;border:2px solid transparent}.choice:hover{border-color:#9bd2ef}.choice.correct{background:#e1f7eb;color:#18734f;border-color:#7ed2a8}.choice.wrong{background:#fff0ec;color:#b54d32;border-color:#f2ab99}
 .result{margin-top:16px;border-radius:20px;padding:20px;background:linear-gradient(135deg,#eaf9ff,#f5fffb);border:1px solid #ceeaf1}.result h2{margin:0 0 7px}.result p{margin:5px 0;color:#4f7185;line-height:1.65}.night-btn{margin-top:12px;background:#425b87;color:white;border-radius:14px;padding:11px 15px;font-weight:900}
+.wind-summary{margin-top:14px;padding:16px;border-radius:17px;background:#eef9ff;border:1px solid #cfe9f7;color:#315f78;line-height:1.65}.wind-summary strong{color:#116f9f}
 .night-mode .lab{background:linear-gradient(#182a4b 0 68%,#d2a370 68% 71%,#9b6238 71%)}.night-mode .window{background:linear-gradient(#1e3760,#53688b)}.night-mode .window:after,.night-mode .window:before{background:#dfeaf5}.night-mode .lab-sign{background:#263e5b;color:#dcecff}.night-mode .water .fill{background:linear-gradient(#8bc8e8 0 10%,#2e80b4 11%)}
 
 @media(max-width:860px){
@@ -121,8 +124,8 @@ h1{font-size:clamp(30px,6vw,52px);margin:16px 0 8px;letter-spacing:-2px}
 .adv-bench{position:absolute;left:4%;right:4%;bottom:4%;height:21%;border-radius:10px;background:linear-gradient(#deb37b 0 18%,#ad7042 18%);box-shadow:0 8px 0 #865532}
 .adv-tank{position:absolute;left:15%;right:15%;bottom:24%;height:47%;border:4px solid rgba(84,159,191,.38);border-radius:8px 8px 18px 18px;background:rgba(236,251,255,.22)}
 .adv-bowl{position:absolute;bottom:9%;width:29%;height:82px;border:4px solid #617c8a;border-radius:5px 5px 22px 22px;overflow:hidden;background:rgba(255,255,255,.5);z-index:3}.adv-bowl.water{left:10%}.adv-bowl.sand{right:10%}.adv-bowl:before{content:'';position:absolute;left:4px;right:4px;bottom:4px;height:58px;border-radius:0 0 16px 16px}.adv-bowl.water:before{background:linear-gradient(#97dfff 0 10%,#3cacE8 11%)}.adv-bowl.sand:before{background:linear-gradient(#f1d18f,#d49b4f)}
-.adv-bowl b{position:absolute;z-index:2;left:50%;top:31px;transform:translateX(-50%);font-size:17px}.adv-bowl.water b{color:#096ca5}.adv-bowl.sand b{color:#76541f}
-.adv-temp{position:absolute;top:-45px;left:50%;transform:translateX(-50%);background:white;border-radius:11px;padding:7px 9px;white-space:nowrap;font-weight:950;box-shadow:0 5px 13px rgba(0,0,0,.12)}
+.adv-bowl b{position:absolute;z-index:2;left:50%;top:31px;transform:translateX(-50%);font-size:clamp(12px,2.1vw,17px);white-space:nowrap;word-break:keep-all;overflow-wrap:normal;text-align:center}.adv-bowl.water b{color:#096ca5}.adv-bowl.sand b{color:#76541f}
+.adv-temp{position:absolute;top:-45px;left:50%;transform:translateX(-50%);background:white;border-radius:11px;padding:7px 9px;white-space:nowrap;word-break:keep-all;overflow-wrap:normal;text-align:center;font-weight:950;box-shadow:0 5px 13px rgba(0,0,0,.12)}
 .adv-lamp{position:absolute;left:50%;top:2%;transform:translateX(-50%);width:112px;height:125px;z-index:5;transition:top .35s ease,filter .35s ease}.adv-lamp .shade{position:absolute;left:16px;top:0;width:80px;height:48px;background:#455c6d;clip-path:polygon(23% 0,77% 0,100% 100%,0 100%);border-radius:6px}.adv-lamp .bulb{position:absolute;left:43px;top:40px;width:26px;height:30px;border-radius:50%;background:#fff3a0;box-shadow:0 0 28px 13px rgba(255,219,82,.62)}.adv-lamp .beam{position:absolute;left:19px;top:62px;width:75px;height:86px;background:linear-gradient(rgba(255,225,102,.38),transparent);clip-path:polygon(28% 0,72% 0,100% 100%,0 100%)}
 .adv-cold{position:absolute;inset:0;background:linear-gradient(rgba(188,229,255,.12),rgba(202,237,255,.26));opacity:0;pointer-events:none;transition:.4s;z-index:1}.adv-cold.show{opacity:1}.snowflake{position:absolute;font-size:22px;animation:snow 3s linear infinite;opacity:.72}@keyframes snow{from{transform:translateY(-30px) rotate(0)}to{transform:translateY(400px) rotate(180deg)}}
 .adv-incense{position:absolute;z-index:4;left:49%;bottom:8%;width:4px;height:65px;background:#6e4931;border-radius:4px}.adv-incense:before{content:'';position:absolute;left:-19px;bottom:-2px;width:43px;height:18px;border-radius:50%;background:#728a9f}.adv-ember{position:absolute;left:-3px;top:-4px;width:10px;height:10px;border-radius:50%;background:#e84929;box-shadow:0 0 12px #ffb547}
@@ -141,13 +144,16 @@ h1{font-size:clamp(30px,6vw,52px);margin:16px 0 8px;letter-spacing:-2px}
 
 
 /* 해 뜨고 지는 심화 장면 */
-.adv-sun{position:absolute;z-index:2;left:50%;top:10%;width:62px;height:62px;border-radius:50%;background:#ffd75d;box-shadow:0 0 0 10px rgba(255,215,93,.16),0 0 34px rgba(255,182,45,.52);transform:translate(-50%,0);transition:all .65s ease;display:none}
-.adv-sun:before{content:'☀️';position:absolute;inset:0;display:grid;place-items:center;font-size:50px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.10))}
-.adv-sun.rise{display:block;top:10%}.adv-sun.set{display:block;top:48%;opacity:.82;transform:translate(-50%,0) scale(.86)}
-.adv-moon{position:absolute;z-index:2;right:10%;top:10%;font-size:46px;display:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.12))}.adv-moon.show{display:block;animation:fadeIn .5s both}
-.adv-scene.sunrise{background:linear-gradient(#bde7ff 0 64%,#e2bd8b 64% 69%,#b57947 69%)}
-.adv-scene.sunset{background:linear-gradient(#4f5f86 0 42%,#d28b6b 42% 64%,#c49b73 64% 69%,#9a623d 69%)}
-.adv-scene.sunset .adv-window{background:linear-gradient(#273b63,#9a6f7e)}
+.adv-sun{position:absolute;z-index:2;width:68px;height:68px;border-radius:50%;background:radial-gradient(circle at 36% 32%,#fff7b2 0 9%,#ffd65a 34%,#ffb52e 72%,#f39a1f 100%);box-shadow:0 0 0 12px rgba(255,208,74,.12),0 0 38px 15px rgba(255,186,52,.32);display:none;pointer-events:none}
+.adv-sun:before{content:'';position:absolute;inset:-24px;border-radius:50%;background:radial-gradient(circle,rgba(255,225,122,.30) 0 31%,rgba(255,218,93,.13) 44%,transparent 67%);animation:sunGlow 2.8s ease-in-out infinite}
+@keyframes sunGlow{50%{transform:scale(1.07);opacity:.72}}
+.adv-sun.rise{display:block;left:17%;top:15%;transform:none}
+/* 해가 진 상황에서는 해를 남겨두지 않고 밤하늘만 보여 준다. */
+.adv-sun.set{display:none!important}
+.adv-moon{position:absolute;z-index:2;right:12%;top:11%;font-size:46px;display:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.18))}.adv-moon.show{display:block;animation:fadeIn .5s both}
+.adv-scene.sunrise{background:linear-gradient(#9fdcff 0 54%,#d8effb 54% 64%,#d7c095 64% 69%,#9a6c45 69%)}
+.adv-scene.sunset{background:linear-gradient(#17284c 0 42%,#40577b 42% 62%,#70677b 62% 69%,#6d4a38 69%)}
+.adv-scene.sunset .adv-window{background:linear-gradient(#142343,#3d5575)}
 .adv-context{border-radius:13px;background:#fff8df;border:1px solid #f2ddb0;padding:10px 11px;color:#725d2d;font-size:12px;line-height:1.55;font-weight:750}
 .simple-situation{border-radius:13px;background:#f7fbfe;border:1px dashed #cddfea;padding:11px 12px;color:#587384;font-size:13px;line-height:1.55;font-weight:800;text-align:center}
 .adv-temp.qualitative{min-width:92px;text-align:center;color:#496a7f}
@@ -170,10 +176,11 @@ h1{font-size:clamp(30px,6vw,52px);margin:16px 0 8px;letter-spacing:-2px}
     <p class="subtitle">교과서처럼 <b>따뜻한 물과 차가운 모래</b>를 이용해 향 연기가 움직이는 방향을 관찰하고, <b>바람이 부는 까닭</b>을 찾아보자.</p>
     <div class="hero-visual" aria-hidden="true"><div class="hero-water"></div><div class="hero-sand"></div><div class="hero-smoke"></div><div class="hero-arrow">→</div></div>
     <div class="profile">
-      <input id="classInput" inputmode="numeric" placeholder="반" maxlength="2" />
-      <input id="numInput" inputmode="numeric" placeholder="번호" maxlength="2" />
-      <input id="nameInput" placeholder="이름" maxlength="8" />
+      <input id="classInput" placeholder="반" maxlength="6" required />
+      <input id="numInput" inputmode="numeric" placeholder="번호" maxlength="3" required />
+      <input id="nameInput" placeholder="이름" maxlength="12" required />
     </div>
+    <div class="profile-error" id="profileError">반, 번호, 이름을 모두 입력해야 실험실에 들어갈 수 있어.</div>
     <button class="primary" id="startBtn">실험실 입장하기 →</button>
   </div>
 </section>
@@ -267,12 +274,14 @@ function showQuestions(){
  step=STEPS.length;$('#progress').style.width='100%';$('#stepPill').textContent='완료';document.querySelectorAll('.step-row').forEach(r=>{r.classList.remove('active');r.classList.add('done')});$('#instIcon').textContent='💨';$('#instTitle').textContent='교과서 실험 결과';$('#instText').textContent='차가운 모래 쪽의 기압이 더 높고, 따뜻한 물 쪽의 기압이 더 낮아 향 연기가 모래에서 따뜻한 물 쪽으로 이동했어.';$('#status').textContent='결과 정리';
  const qa=[
   {q:'① 교과서 모형에서 더 따뜻한 곳은?',a:['모래가 있는 쪽','따뜻한 물이 있는 쪽'],c:1},
-  {q:'② 기압이 더 높은 곳은?',a:['차가운 모래가 있는 쪽','따뜻한 물이 있는 쪽'],c:0},
-  {q:'③ 향 연기와 공기가 이동하는 방향은?',a:['모래 → 따뜻한 물','따뜻한 물 → 모래'],c:0}
- ];let html='';qa.forEach((x,qi)=>html+=`<div class="question"><h3>${x.q}</h3><div class="choices">${x.a.map((a,i)=>`<button class="choice" data-q="${qi}" data-i="${i}" data-c="${x.c}">${a}</button>`).join('')}</div></div>`);$('#questionArea').innerHTML=html;document.querySelectorAll('.choice').forEach(b=>b.onclick=answerQuestion)
+  {q:'② 따뜻한 물 쪽의 공기는 어떻게 움직이기 쉬울까?',a:['따뜻해져 위로 올라가기 쉽다','차가워져 아래로 내려가기 쉽다'],c:0},
+  {q:'③ 이 실험에서 지표면 가까이의 기압이 더 높은 곳은?',a:['차가운 모래가 있는 쪽','따뜻한 물이 있는 쪽'],c:0},
+  {q:'④ 향 연기와 공기가 이동하는 방향은?',a:['모래 → 따뜻한 물','따뜻한 물 → 모래'],c:0},
+  {q:'⑤ 바람이 생기는 까닭으로 가장 알맞은 것은?',a:['두 곳의 온도 차이로 공기의 움직임과 기압 차가 생겨, 공기가 기압이 높은 곳에서 낮은 곳으로 이동하기 때문이다.','향에서 나온 연기가 공기를 밀어내기 때문이다.'],c:0}
+ ];let html='<div class="wind-summary"><strong>🧠 바람은 왜 생길까? 정리 문제</strong><br>실험에서 본 온도 차 → 공기의 움직임 → 기압 차 → 바람의 관계를 떠올리며 풀어 보자.</div>';qa.forEach((x,qi)=>html+=`<div class="question"><h3>${x.q}</h3><div class="choices">${x.a.map((a,i)=>`<button class="choice" data-q="${qi}" data-i="${i}" data-c="${x.c}">${a}</button>`).join('')}</div></div>`);$('#questionArea').innerHTML=html;document.querySelectorAll('.choice').forEach(b=>b.onclick=answerQuestion)
 }
-let answered=new Set();function answerQuestion(e){let b=e.currentTarget,q=+b.dataset.q,i=+b.dataset.i,c=+b.dataset.c;if(answered.has(q))return;if(i===c){b.classList.add('correct');b.textContent+=' ✓';answered.add(q);toast('정답! 👍',900);if(answered.size===3)setTimeout(showResult,1100)}else{b.classList.add('wrong');toast('한 번 더 생각해 보자!',900);setTimeout(()=>b.classList.remove('wrong'),700)}}
-function showResult(){let name=$('#nameInput').value.trim();let r=document.createElement('div');r.className='result fadeIn';r.innerHTML=`<h2>🎉 ${name?name+' 학생, ':''}교과서 실험 성공!</h2><p><b>따뜻한 물 쪽</b>의 공기는 따뜻하고 가벼워 상대적으로 <b>저기압</b>, <b>차가운 모래 쪽</b>의 공기는 차갑고 무거워 상대적으로 <b>고기압</b>이 돼. 그래서 공기는 <b>고기압 → 저기압</b>, 즉 <b>모래 → 따뜻한 물</b> 쪽으로 이동해.</p><p>이제 조건을 바꾸면 바람 방향도 바뀔까? <b>해가 뜰 때·질 때, 전등으로 가열할 때, 추운 곳에 둘 때</b>를 직접 비교해 보자.</p><div class="result-actions"><button class="advanced-btn" id="advancedBtn">🧪 심화 실험실 열기</button></div>`;$('#questionArea').appendChild(r);$('#advancedBtn').onclick=openAdvancedLab}
+let answered=new Set();function answerQuestion(e){let b=e.currentTarget,q=+b.dataset.q,i=+b.dataset.i,c=+b.dataset.c;if(answered.has(q))return;if(i===c){b.classList.add('correct');b.textContent+=' ✓';answered.add(q);toast('정답! 👍',900);if(answered.size===5)setTimeout(showResult,1100)}else{b.classList.add('wrong');toast('한 번 더 생각해 보자!',900);setTimeout(()=>b.classList.remove('wrong'),700)}}
+function showResult(){let name=$('#nameInput').value.trim();let r=document.createElement('div');r.className='result fadeIn';r.innerHTML=`<h2>🎉 ${name?name+' 학생, ':''}교과서 실험 성공!</h2><p>이 모형에서는 <b>따뜻한 물 쪽 공기가 데워져 위로 올라가면서</b> 지표면 가까이의 기압이 주변보다 상대적으로 낮아지고, 차가운 모래 쪽은 상대적으로 기압이 높아져. 그래서 공기는 <b>기압이 높은 곳 → 낮은 곳</b>, 즉 <b>모래 → 따뜻한 물</b> 쪽으로 이동해. 이렇게 공기가 이동하는 것이 <b>바람</b>이야.</p><p>이제 조건을 바꾸면 바람 방향도 바뀔까? <b>해가 뜰 때·질 때, 전등으로 가열할 때, 추운 곳에 둘 때</b>를 직접 비교해 보자.</p><div class="result-actions"><button class="advanced-btn" id="advancedBtn">🧪 심화 실험실 열기</button></div>`;$('#questionArea').appendChild(r);$('#advancedBtn').onclick=openAdvancedLab}
 
 /* ===== 심화 실험실 ===== */
 let advMode='sunrise',advPrediction=null,advRunning=false;
@@ -316,7 +325,7 @@ function previewAdvScene(){
  $('#advWaterTemp').classList.add('qualitative');$('#advSandTemp').classList.add('qualitative');
  $('#advWaterTemp').textContent='물(바다)';$('#advSandTemp').textContent='모래(육지)';
  if(advMode==='sunrise'){scene.classList.add('sunrise');sun.classList.add('rise');$('#advEnvLabel').textContent='☀️ 해가 뜬 상황'}
- if(advMode==='sunset'){scene.classList.add('sunset');sun.classList.add('set');moon.classList.add('show');$('#advEnvLabel').textContent='🌙 해가 진 상황'}
+ if(advMode==='sunset'){scene.classList.add('sunset');moon.classList.add('show');$('#advEnvLabel').textContent='🌙 해가 진 상황'}
  if(advMode==='heat'){lamp.style.display='block';$('#advEnvLabel').textContent='💡 같은 전등으로 가열'}
  if(advMode==='cold'){cold.classList.add('show');makeSnow(10);$('#advEnvLabel').textContent='❄️ 추운 곳'}
  if(advMode==='free'){
@@ -354,8 +363,22 @@ function finishAdvanced(out){
 }
 function showAdvWind(dir){const a=$('#advArrow');a.className='adv-arrow show '+(dir==='sw'?'reverse':dir==='none'?'none':'');$('#advArrowText').textContent=dir==='ws'?'바다(물) → 육지(모래)':dir==='sw'?'육지(모래) → 바다(물)':'뚜렷한 이동 거의 없음';makeAdvSmoke(dir)}
 function makeAdvSmoke(dir){const layer=$('#advSmoke');layer.innerHTML='';for(let i=0;i<13;i++){let d=document.createElement('i');layer.appendChild(d);let dx=dir==='ws'?140:dir==='sw'?-140:(i%2?18:-18);d.animate([{opacity:0,transform:'translate(0,0) scale(.7)'},{opacity:.68,offset:.2},{opacity:.42,offset:.65},{opacity:0,transform:`translate(${dx}px,-62px) scale(1.45)`}],{duration:3000,delay:i*170,iterations:2,easing:'linear'})}}
+function windProfileComplete(){
+ const fields=[$('#classInput'),$('#numInput'),$('#nameInput')];let ok=true;
+ fields.forEach(el=>{const empty=!el.value.trim();el.classList.toggle('invalid',empty);if(empty)ok=false});
+ $('#profileError').classList.toggle('show',!ok);
+ if(!ok){const first=fields.find(el=>!el.value.trim());if(first)first.focus()}
+ return ok;
+}
+['classInput','numInput','nameInput'].forEach(id=>$('#'+id).addEventListener('input',e=>{
+ e.currentTarget.classList.remove('invalid');
+ if($('#classInput').value.trim()&&$('#numInput').value.trim()&&$('#nameInput').value.trim())$('#profileError').classList.remove('show')
+}));
 $('#experimentMenuBtn').onclick=()=>{location.href='index.html'};$('#windRestartBtn').onclick=()=>{location.reload()};
-$('#startBtn').onclick=()=>{$('#hero').style.display='none';$('#labPage').style.display='block';initSteps();updateUI();spawnStep()};
+$('#startBtn').onclick=()=>{
+ if(!windProfileComplete())return;
+ $('#hero').style.display='none';$('#labPage').style.display='block';initSteps();updateUI();spawnStep()
+};
 })();
 </script>
 </body>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#f7fbff" />
 <title>경기초 5학년 과학실험실 | 이슬·안개·구름 알아보기</title>
-<!-- v8: 물 붓기 방향 / 캔 배치 / 안개 시각 효과 개선 -->
+<!-- v10: 필수 입력 검증 / 캔 초기화 / 글자 깨짐 방지 -->
 <style>
   :root{
     --ink:#16324a; --muted:#62798c; --line:#dbe7ef; --panel:#ffffff;
@@ -194,13 +194,13 @@
   .temp-column.step-hidden{opacity:0!important;visibility:hidden!important}
   .drag-item.ready{animation:toolReady 1.15s ease-in-out infinite}
   @keyframes toolReady{50%{filter:drop-shadow(0 0 13px rgba(67,169,216,.72));transform:scale(1.035)}}
-  .tool-tag{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.94);border:1px solid var(--line);font-size:10px;color:#4b7187;box-shadow:0 4px 10px rgba(40,77,100,.08);pointer-events:none}
+  .tool-tag{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;word-break:keep-all;overflow-wrap:normal;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.94);border:1px solid var(--line);font-size:10px;color:#4b7187;box-shadow:0 4px 10px rgba(40,77,100,.08);pointer-events:none}
   .drop-zone{position:absolute;border:3px dashed rgba(72,153,197,.55);background:rgba(226,246,255,.46);border-radius:24px;display:grid;place-items:center;text-align:center;color:#4680a1;font-size:11px;font-weight:1000;z-index:1;transition:.2s;pointer-events:none}
   .drop-zone.hot{background:rgba(211,244,233,.78);border-color:#54b78f;transform:scale(1.035)}
   .drop-zone.done{opacity:.14}
-  .can-zone{left:50%;top:172px;transform:translateX(-50%);width:185px;height:255px;border-radius:30px}
+  .can-zone{left:50%;top:225px;transform:translateX(-50%);width:185px;height:255px;border-radius:30px}
   .dew-vapor-label{left:18px;top:83px}
-  .dew-lab .can.drag-item{left:42px;top:292px;transform:none;width:118px;height:175px}
+  .dew-lab .can.drag-item{left:22px;top:168px;bottom:auto;transform:none;width:118px;height:175px}
   .dew-lab .can.drag-item:after{bottom:-34px}
   .dew-lab .can.drag-item.placed{width:155px;height:230px}
   .dew-lab .towel.drag-item{display:flex;align-items:center;justify-content:center;opacity:1;left:auto;right:32px;top:330px;width:150px;height:74px;transform:rotate(-7deg);font-size:12px;font-weight:900;color:#785f2b}
@@ -234,8 +234,8 @@
 
   @media(max-width:760px){
     .direct-lab{min-height:560px}
-    .dew-lab .can.drag-item{left:20px;top:365px;width:95px;height:142px}.dew-lab .can.drag-item.placed{width:130px;height:195px}
-    .dew-lab .towel.drag-item{right:18px;top:390px;width:118px;height:62px}.can-zone{top:200px;width:155px;height:225px}
+    .dew-lab .can.drag-item{left:14px;top:338px;bottom:auto;width:95px;height:142px}.dew-lab .can.drag-item.placed{width:130px;height:195px}
+    .dew-lab .towel.drag-item{right:18px;top:390px;width:118px;height:62px}.can-zone{top:250px;width:155px;height:225px}
     #dewMagnifier{left:18px;top:110px;width:72px;height:72px}.magnifier:after{width:55px;right:-46px;bottom:-23px}
     .dew-vapor-label{top:76px;left:10px;max-width:150px}.dew-zoom{right:8px;bottom:70px}
     .observe-meter,.wipe-meter{width:155px}.wipe-meter{right:10px}.observe-meter{left:10px}
@@ -267,10 +267,11 @@
     <div class="card">
       <h2>탐구자 등록</h2>
       <div class="grid3">
-        <div class="field"><label for="className">반</label><input id="className" placeholder="예: 난초반 / 1반" maxlength="12"></div>
-        <div class="field"><label for="studentNo">번호</label><input id="studentNo" inputmode="numeric" placeholder="예: 7" maxlength="3"></div>
-        <div class="field"><label for="studentName">이름 또는 별명</label><input id="studentName" placeholder="예: 홍길동" maxlength="12"></div>
+        <div class="field"><label for="className">반</label><input id="className" placeholder="예: 난초반 / 1반" maxlength="12" required></div>
+        <div class="field"><label for="studentNo">번호</label><input id="studentNo" inputmode="numeric" placeholder="예: 7" maxlength="3" required></div>
+        <div class="field"><label for="studentName">이름</label><input id="studentName" placeholder="예: 홍길동" maxlength="12" required></div>
       </div>
+      <div class="form-error" id="startError">반, 번호, 이름을 모두 입력해야 실험을 시작할 수 있어.</div>
       <div class="mission-row">
         <div class="mission"><div class="num">1</div><b>💧 이슬 실험</b><span>차가운 캔 표면에서 물방울이 생기는 까닭 관찰</span></div>
         <div class="mission"><div class="num">2</div><b>🌫️ 안개 실험</b><span>집기병 안의 공기를 차갑게 만들어 안개 만들기</span></div>
@@ -399,11 +400,33 @@
   const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
   const stages=['stageStart','stageDew','stageFog','stageCloud','stageQuiz'];
   let current=0, dewStep=0, fogStep=0, dewAnswered=false, fogAnswered=false, cloudDone=false;
-  const stateKey='gyeonggiScienceDewFogCloudV7';
+  const stateKey='gyeonggiScienceDewFogCloudV10';
   const STEP_PAUSE=1300;
   const profile={className:'',studentNo:'',studentName:''};
 
   function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+  function profileComplete(){
+    const fields=[$('#className'),$('#studentNo'),$('#studentName')];
+    let ok=true;
+    fields.forEach(el=>{const empty=!el.value.trim();el.classList.toggle('invalid',empty);if(empty)ok=false});
+    $('#startError').classList.toggle('show',!ok);
+    if(!ok){const first=fields.find(el=>!el.value.trim());if(first)first.focus()}
+    return ok;
+  }
+  ['className','studentNo','studentName'].forEach(id=>$('#'+id).addEventListener('input',e=>{
+    e.currentTarget.classList.remove('invalid');
+    if($('#className').value.trim()&&$('#studentNo').value.trim()&&$('#studentName').value.trim())$('#startError').classList.remove('show')
+  }));
+  function resetDewForFreshStart(){
+    current=0;dewStep=0;fogStep=0;dewAnswered=false;fogAnswered=false;cloudDone=false;dewBusy=false;fogBusy=false;
+    wipePasses=0;lastWipeSide=0;dewObserveElapsed=0;fogObserveElapsed=0;incenseVisited=false;fogObserveTouched=false;
+    clearInterval(dewWatch);clearInterval(fogWatch);
+    resetToolPosition(can);can.classList.remove('placed','dragging','locked','step-hidden','ready');can.querySelectorAll('.drop').forEach(e=>e.remove());
+    resetToolPosition(towel);resetToolPosition(dewMag);
+    $('#dewZoom').classList.remove('on');$('#dewQuestion').classList.add('hidden');$('#toFog').disabled=true;
+    setFogVisual(0);$('#fogSpecks').innerHTML='';$('#fogQuestion').classList.add('hidden');$('#fogNote').classList.remove('on');$('#toCloud').disabled=true;
+    $('#cloudshape').classList.remove('show');$('#toQuiz').disabled=true;
+  }
   function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('on'),1800)}
   function showStage(n){current=clamp(n,0,4);stages.forEach((id,i)=>$('#'+id).classList.toggle('active',i===current));$('#progressBar').style.width=(current*25)+'%';window.scrollTo({top:0,behavior:'smooth'});save();if(current===1)setTimeout(syncDew,80);if(current===2)setTimeout(syncFog,80);if(current===3)setTimeout(syncCloud,80)}
   function save(){profile.className=$('#className').value;profile.studentNo=$('#studentNo').value;profile.studentName=$('#studentName').value;localStorage.setItem(stateKey,JSON.stringify({current,dewStep,fogStep,dewAnswered,fogAnswered,cloudDone,profile}))}
@@ -427,7 +450,7 @@
   function placeCanOnBench(){
     const zone=$('#canZone');
     can.classList.add('placed');
-    requestAnimationFrame(()=>snapCenter(can,zone,12));
+    requestAnimationFrame(()=>snapCenter(can,zone,4));
   }
   function prepareWaterPour(){
     const lab=$('#fogLab'),jar=$('#jar'),stream=$('#waterStream');
@@ -536,8 +559,17 @@
   $('#resetAir').onclick=()=>{resetAirPosition();cloudFromPosition();$('#cloudNotice').innerHTML='따뜻하고 수증기를 포함한 공기 덩어리를 다시 <b>직접 높은 곳으로 끌어 올려</b> 보자.'};
 
   // ---------- 화면 이동 / 퀴즈 ----------
-  $('#startBtn').onclick=()=>{save();showStage(1)};
-  $('#resumeBtn').onclick=()=>{if(restore()){showStage(Math.max(1,current));toast('저장된 곳에서 이어갈게!')}else toast('아직 저장된 실험이 없어!')};
+  $('#startBtn').onclick=()=>{
+    if(!profileComplete()){toast('반, 번호, 이름을 모두 입력해 줘!');return}
+    resetDewForFreshStart();
+    save();showStage(1);
+  };
+  $('#resumeBtn').onclick=()=>{
+    if(restore()){
+      if(!profileComplete()){toast('반, 번호, 이름을 모두 입력한 뒤 이어가 줘!');showStage(0);return}
+      showStage(Math.max(1,current));toast('저장된 곳에서 이어갈게!')
+    }else toast('아직 저장된 실험이 없어!')
+  };
   $('#toFog').onclick=()=>showStage(2);$('#toCloud').onclick=()=>showStage(3);$('#toQuiz').onclick=()=>showStage(4);$('#homeBtn').onclick=()=>showStage(0);$('#selectLabBtn').onclick=()=>{location.href='index.html'};
   function grade(){const key={q1:'b',q2:'a',q3:'b',q4:'b',q5:'b'};let score=0,complete=true;Object.entries(key).forEach(([q,a])=>{const checked=document.querySelector(`input[name="${q}"]:checked`);if(!checked)complete=false;else if(checked.value===a)score++});if(!complete){toast('5문제를 모두 골라 줘!');return}$('#scoreNum').textContent=score;$('#stars').textContent='★'.repeat(score)+'☆'.repeat(5-score);$('#resultTitle').textContent=score===5?'완벽한 과학 탐구자! 🎉':score>=4?'아주 잘했어! 👏':score>=3?'좋아, 핵심을 다시 확인해 보자!':'실험 장면을 한 번 더 떠올려 보자!';$('#resultText').innerHTML=`${profile.className||'5학년'} ${profile.studentNo?profile.studentNo+'번 ':''}${profile.studentName||'탐구자'}의 점수는 <b>${score}점 / 5점</b>이야.<br><br><b>핵심:</b> 공기 중 수증기가 차가워지면 작은 물방울로 응결할 수 있어.`;$('#result').classList.remove('hidden');$('#progressBar').style.width='100%';save();$('#result').scrollIntoView({behavior:'smooth',block:'start'})}
   $('#gradeBtn').onclick=grade;
